@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dene ve Öğren!</title>
+    <!-- Sitenin kendi css'i -->
+    <style>:root{--bg-color:#1e1e1e;--text-color:#e0e0e0;--header-color:#6366f1;--tab-active-color:#2d2d2d;--tab-inactive-color:#252525;--border-color:#444;--editor-bg:#1e1e1e;--editor-text:#e0e0e0;--result-header-bg:#2d2d2d;--button-hover-color:#038857;--run-button-color:#ff7700;--run-button-text:#fff;--save-button-color:#2196F3;--save-button-hover:#0b7dda;--theme-button-bg:#555;--theme-button-text:#fff;--border-radius:8px;--box-shadow:0 4px 6px rgba(0,0,0,.1);--reset-button-color:#9c27b0;--reset-button-hover:#7b1fa2}[data-theme=light]{--bg-color:#fff;--text-color:#333;--header-color:#6366f1;--tab-active-color:#fff;--tab-inactive-color:#e1e1e1;--border-color:#ccc;--editor-bg:#f8f8f8;--editor-text:#333;--result-header-bg:#f1f1f1;--button-hover-color:#038857;--run-button-color:#ff7700;--run-button-text:#fff;--save-button-color:#2196F3;--save-button-hover:#0b7dda;--theme-button-bg:#e0e0e0;--theme-button-text:#333;--box-shadow:0 2px 10px rgba(0,0,0,.05);--reset-button-color:#9c27b0;--reset-button-hover:#7b1fa2}button:focus,textarea:focus{outline:2px solid var(--header-color)}body{font-family:'Segoe UI',Arial,sans-serif;margin:0;padding:0;display:flex;flex-direction:column;height:100vh;background-color:var(--bg-color);color:var(--text-color);transition:all .3s ease}.header{background-color:var(--header-color);color:#fff;padding:12px 20px;text-align:center;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.2)}.logo-text{font-size:22px;font-weight:700;letter-spacing:.5px;margin:0}.container{display:flex;flex:1;overflow:visible;position:relative}.editor-container{display:flex;flex-direction:column;width:50%;border-right:1px solid var(--border-color);border-radius:var(--border-radius);overflow:hidden}.editor-wrapper{flex:1;position:relative}.CodeMirror{height:100%!important;font-family:'Fira Code',Consolas,monospace;font-size:16px;line-height:1.5}.result-container{width:50%;display:flex;flex-direction:column;border-radius:var(--border-radius);overflow:hidden}.result-header{background-color:var(--result-header-bg);padding:12px 20px;border-bottom:1px solid var(--border-color);font-weight:700;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}.result-frame{flex:1;border:none;background-color:#fff;overflow-y:visible;scrollbar-width:thin;scrollbar-color:var(--header-color) var(--bg-color);box-shadow:inset 0 0 10px rgba(0,0,0,.1);border-radius:0 0 var(--border-radius) var(--border-radius)}.button{border:none;cursor:pointer;border-radius:20px;font-weight:600;font-size:15px;transition:all .3s ease;box-shadow:0 4px 8px rgba(0,0,0,.2);letter-spacing:.5px;display:flex;align-items:center;justify-content:center;padding:10px 22px;margin-right:10px}.run-button{background-color:var(--run-button-color);color:var(--run-button-text)}.save-button{background-color:var(--save-button-color);color:#fff}.reset-button{background-color:var(--reset-button-color);color:#fff}.run-button:hover,.reset-button:hover{background-color:var(--button-hover-color);transform:translateY(-2px);box-shadow:0 6px 12px rgba(0,0,0,.3)}.save-button:hover{background-color:var(--save-button-hover);transform:translateY(-2px);box-shadow:0 6px 12px rgba(0,0,0,.3)}.reset-button:hover{background-color:var(--reset-button-hover);transform:translateY(-2px);box-shadow:0 6px 12px rgba(0,0,0,.3)}.button:active{transform:translateY(0);box-shadow:0 2px 3px rgba(0,0,0,.2)}.theme-toggle{background-color:var(--theme-button-bg);border:none;color:var(--theme-button-text);padding:10px 20px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .3s ease;font-weight:600;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,.3)}.theme-toggle:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.4)}.theme-toggle:active{transform:translateY(0)}.resizer{width:10px;height:100%;background-color:rgba(0,123,255,.2);position:absolute;left:50%;top:0;transform:translateX(-50%);margin:0;cursor:col-resize;z-index:10;transition:all .2s ease;border-radius:3px}.resizer:hover,.resizer.active{background-color:rgba(0,123,255,.8);box-shadow:0 0 10px rgba(0,123,255,.5);width:12px}.resizer::after{content:'';position:absolute;width:4px;height:40px;background-color:rgba(255,255,255,.8);top:50%;left:50%;transform:translate(-50%,-50%);border-radius:2px}.theme-icon{width:18px;height:18px}.button-icon{margin-right:8px;width:16px;height:16px}.button-text-shadow{text-shadow:1px 1px 2px rgba(0,0,0,.5)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:visible;clip:rect(0,0,0,0);white-space:nowrap;border:0}.header-buttons{display:flex;align-items:center}.animation-pulse{animation:pulse 2s infinite}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,119,0,.7)}70%{box-shadow:0 0 0 10px rgba(255,119,0,0)}100%{box-shadow:0 0 0 0 rgba(255,119,0,0)}}@media (max-width:768px){.container{flex-direction:column;height:auto}.editor-container,.result-container{width:100%!important;height:50vh}.resizer{display:none}.header{flex-wrap:wrap}.header-buttons{margin-top:10px;width:100%;justify-content:space-between}}@media (max-width:480px){.header{flex-direction:column;padding:10px}.header-buttons{flex-direction:column;width:100%}.button{margin-bottom:10px;width:100%;margin-right:0;}.theme-toggle{width:100%;margin-top:5px;justify-content:center;margin-right:0;margin-bottom:10px;}.theme-toggle:last-child{margin-bottom:0;}}.fontchange{font-weight:700;font-size:18px;color:var(--header-color)}.editor-container{width:50%;height:100%}#combined-editor{width:100%;height:100%;resize:none;border:none;font-family:Consolas,monospace;font-size:16px;color:var(--editor-text);background-color:var(--editor-bg);padding:15px;box-sizing:border-box;outline:none;tab-size:4}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg-color);border-radius:10px}::-webkit-scrollbar-thumb{background:var(--header-color);border-radius:10px;transition:background .3s ease}::-webkit-scrollbar-thumb:hover{background:var(--button-hover-color)}::-webkit-scrollbar-corner{background:var(--bg-color)}*{scrollbar-width:thin;scrollbar-color:var(--header-color) var(--bg-color)}.CodeMirror-vscrollbar::-webkit-scrollbar,.CodeMirror-hscrollbar::-webkit-scrollbar{width:10px;height:10px}.CodeMirror-vscrollbar::-webkit-scrollbar-track,.CodeMirror-hscrollbar::-webkit-scrollbar-track{background:var(--editor-bg);border-radius:10px}.CodeMirror-vscrollbar::-webkit-scrollbar-thumb,.CodeMirror-hscrollbar::-webkit-scrollbar-thumb{background:var(--header-color);border-radius:10px}.CodeMirror-vscrollbar::-webkit-scrollbar-thumb:hover,.CodeMirror-hscrollbar::-webkit-scrollbar-thumb:hover{background:var(--button-hover-color)}#result-frame{overflow:auto}</style>
+    <!-- syntax renkleri vb. şeyler için -->
+    <link rel="stylesheet" href="lib/codemirror.min.css">
+    <!-- Temalar -->
+    <link rel="stylesheet" href="lib/dracula.min.css">
+    <link rel="stylesheet" href="lib/eclipse.min.css">
+</head>
+<body>
+    <div class="header">
+        <h2 class="logo-text" style="-webkit-text-stroke: 0.3px black;">Kendin dene!</h2>
+        <div class="header-buttons">
+            <button class="button reset-button" onclick="resetResizer()">
+                <!-- Simge -->
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                    <line x1="15" y1="3" x2="15" y2="21"></line>
+                </svg>
+                <!-- Simge -->
+                <span class="button-text-shadow">Sıfırla</span>
+            </button>
+            <button class="button run-button animation-pulse" onclick="runCode()">
+                <!-- Simge -->
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <!-- Simge -->
+                <span class="button-text-shadow">Çalıştır</span>
+            </button>
+            <button class="button save-button" onclick="saveCodeToFile()">
+                <!-- Simge -->
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                <!-- Simge -->
+                <span class="button-text-shadow">Kaydet</span>
+            </button>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <!-- Simge -->
+                <svg class="theme-icon" id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <!-- Simge -->
+                <span id="theme-text" class="button-text-shadow">Aydınlık Mod</span>
+            </button>
+        </div>
+        <span id="status-message" role="status" aria-live="polite" class="sr-only"></span>
+    </div>
+    <div class="container">
+        <div class="editor-container fontchange" id="editor-container">
+            <div class="editor-wrapper active">
+                <!-- Kod Yazma Kısmı -->
+                <textarea id="combined-editor"><!DOCTYPE html>
+<html>
+<head>
+<title>Sayfam</title>
+<style>
+body {background-color: lightblue;}
+h1 {
+  color: navy;
+  margin-left: 20px;
+}
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+</style>
+</head>
+<body>
+
+<h1>Merhaba Dünya!</h1>
+<p>Bu bir paragraf.</p>
+<p id="demo">JavaScript burayı değiştirecek.</p>
+<button onclick="myFunction()">Tıkla</button>
+
+<script>
+function myFunction() {
+  document.getElementById("demo").innerHTML = "JavaScript çalıştı!";
+}
+</script>
+</body>
+</html></textarea>
+            </div>
+        </div> 
+        <!-- Resizer Çubuğu -->
+        <div class="resizer" id="resizer"></div>
+        <!-- Sonuç Kısmı -->
+        <div class="result-container" id="result-container">
+            <div class="result-header fontchange">
+                <span style="-webkit-text-stroke: 0.5px black; font-weight: 900;">Sonuç</span>
+                <!-- Durum bilgilerinin yazılacağı kısım -->
+                <span style="-webkit-text-stroke: 0.5px black; font-weight: 900;" id="result-status"></span>
+            </div>
+            <!-- Kod Çıktısı -->
+            <iframe id="result-frame" class="result-frame"></iframe>
+        </div>
+    </div>
+    <!-- scriptler -->
+    <script src="lib/codemirror.min.js"></script><script src="lib/xml.min.js"></script><script src="lib/javascript.min.js"></script><script src="lib/css.min.js"></script><script src="lib/htmlmixed.min.js"></script><script src="lib/closetag.min.js"></script><script src="lib/closebrackets.min.js"></script><script src="lib/matchbrackets.min.js"></script><script src="lib/IDEJavaScript.js"></script>
+</body>
+</html>
