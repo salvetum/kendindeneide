@@ -1,7 +1,7 @@
 /* Sitedeki css kodların un-minify edilmiş halidir. */
 #resizer,
 #resizer::after {
-    transition: background-color .2s
+    transition: background-color 0.2s;
 }
 
 :root {
@@ -21,14 +21,14 @@
     --red: #ff8a8a;
     --blue: #8ab4f8;
     --yellow: #fde28c;
-    --font-main: 'Segoe UI', 'Roboto', system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    --font-main: "Segoe UI", "Roboto", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
     --border-radius: 12px;
     --shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-    --transition-speed: 0.3s
+    --transition-speed: 0.3s;
 }
 
-[data-theme=light] {
+[data-theme="light"] {
     --bg-color: #f5f4fa;
     --text-color: #333147;
     --header-bg: #ffffff;
@@ -45,54 +45,54 @@
     --red: #e74c3c;
     --blue: #3498db;
     --yellow: #f1c40f;
-    --shadow: 0 6px 16px rgba(0, 0, 0, 0.08)
+    --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px)
+        transform: translateY(10px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0);
     }
 }
 
 * {
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) var(--bg-color)
+    scrollbar-color: var(--accent-color) var(--bg-color);
 }
 
 ::-webkit-scrollbar {
     width: 12px;
-    height: 12px
+    height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--header-bg)
+    background: var(--header-bg);
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
     border-radius: 10px;
-    border: 3px solid var(--header-bg)
+    border: 3px solid var(--header-bg);
 }
 
 .editor-tabs,
 .header {
-    border-bottom: 1px solid var(--border-color)
+    border-bottom: 1px solid var(--border-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--accent-hover)
+    background-color: var(--accent-hover);
 }
 
 .button:hover:not(:disabled),
 .setting-item:hover {
-    background-color: var(--button-hover-bg)
+    background-color: var(--button-hover-bg);
 }
 
 body {
@@ -104,7 +104,7 @@ body {
     min-height: 100vh;
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
 .header {
@@ -116,26 +116,26 @@ body {
     box-shadow: var(--shadow);
     z-index: 20;
     flex-shrink: 0;
-    gap: 16px
+    gap: 16px;
 }
 
 .header-left {
-    justify-self: start
+    justify-self: start;
 }
 
 .header-center {
-    justify-self: center
+    justify-self: center;
 }
 
 .header-right {
-    justify-self: end
+    justify-self: end;
 }
 
 .logo {
     font-size: 22px;
     font-weight: 700;
     color: var(--accent-color);
-    animation: .5s ease-out both fadeIn
+    animation: 0.5s ease-out both fadeIn;
 }
 
 .button-group {
@@ -143,7 +143,7 @@ body {
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: center
+    justify-content: center;
 }
 
 .button,
@@ -151,7 +151,7 @@ body {
     font-size: 14px;
     display: flex;
     gap: 8px;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .button {
@@ -160,76 +160,76 @@ body {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-weight: 600;
-    transition: .2s;
+    transition: 0.2s;
     align-items: center;
     justify-content: center;
     padding: 10px 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .button:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, .15)
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .button:active:not(:disabled) {
-    transform: translateY(-1px) scale(.98);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .button:disabled {
-    opacity: .5;
-    cursor: not-allowed
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .button:focus-visible,
 textarea:focus-visible {
     outline: 3px solid var(--accent-color);
-    outline-offset: 2px
+    outline-offset: 2px;
 }
 
 .button-icon {
     width: 18px;
     height: 18px;
     stroke-width: 2;
-    transition: transform .2s ease-in-out
+    transition: transform 0.2s ease-in-out;
 }
 
 .button:hover .button-icon,
 .tab-button:hover i {
-    transform: scale(1.1)
+    transform: scale(1.1);
 }
 
 .run-button {
-    color: var(--green)
+    color: var(--green);
 }
 
 .format-button {
-    color: var(--blue)
+    color: var(--blue);
 }
 
 .save-button {
-    color: var(--orange)
+    color: var(--orange);
 }
 
 .clear-button {
-    color: var(--red)
+    color: var(--red);
 }
 
 .revert-button {
-    color: var(--yellow)
+    color: var(--yellow);
 }
 
 .CodeMirror,
 .tab-button {
-    color: var(--text-color)
+    color: var(--text-color);
 }
 
 .container {
     display: flex;
     flex: 1;
     overflow: hidden;
-    animation: .5s ease-out .2s both fadeIn
+    animation: 0.5s ease-out 0.2s both fadeIn;
 }
 
 .editor-container,
@@ -243,27 +243,27 @@ textarea:focus-visible {
     margin: 10px;
     border: 1px solid var(--border-color);
     overflow: hidden;
-    contain: layout style paint
+    contain: layout style paint;
 }
 
 .pane-view {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%
+    width: 100%;
 }
 
 .editor-tabs {
     display: flex;
     flex-shrink: 0;
     background-color: var(--header-bg);
-    padding: 0 10px
+    padding: 0 10px;
 }
 
 .pane-header,
 .tab-button {
     padding: 12px 18px;
-    font-weight: 600
+    font-weight: 600;
 }
 
 .tab-button {
@@ -272,27 +272,27 @@ textarea:focus-visible {
     border-bottom: 3px solid transparent;
     transition: all var(--transition-speed) ease;
     align-items: center;
-    position: relative
+    position: relative;
 }
 
 #toast,
 .pane-header {
     background-color: var(--header-bg);
-    font-size: 15px
+    font-size: 15px;
 }
 
 .tab-button i {
     font-size: 20px;
-    transition: transform .2s
+    transition: transform 0.2s;
 }
 
 .tab-button:hover {
-    color: var(--accent-hover)
+    color: var(--accent-hover);
 }
 
 .tab-button.active {
     color: var(--accent-color);
-    border-bottom-color: var(--accent-color)
+    border-bottom-color: var(--accent-color);
 }
 
 .editor-pane {
@@ -301,12 +301,12 @@ textarea:focus-visible {
     flex-direction: column;
     overflow: hidden;
     opacity: 0;
-    transition: opacity var(--transition-speed) ease-in-out
+    transition: opacity var(--transition-speed) ease-in-out;
 }
 
 .editor-pane.active {
     display: flex;
-    opacity: 1
+    opacity: 1;
 }
 
 .pane-header {
@@ -314,13 +314,13 @@ textarea:focus-visible {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-shrink: 0
+    flex-shrink: 0;
 }
 
 .editor-wrapper {
     flex-grow: 1;
     position: relative;
-    overflow: auto
+    overflow: auto;
 }
 
 .CodeMirror {
@@ -328,28 +328,28 @@ textarea:focus-visible {
     font-family: var(--font-mono);
     font-size: 16px;
     line-height: 1.6;
-    background-color: var(--editor-bg)
+    background-color: var(--editor-bg);
 }
 
 .CodeMirror-gutters {
     background-color: var(--header-bg) !important;
-    border-right: 1px solid var(--border-color) !important
+    border-right: 1px solid var(--border-color) !important;
 }
 
 .cm-s-dracula .CodeMirror-cursor {
-    border-left: 2px solid #f8f8f0
+    border-left: 2px solid #f8f8f0;
 }
 
 .cm-s-eclipse .CodeMirror-cursor {
-    border-left: 2px solid #333
+    border-left: 2px solid #333;
 }
 
 .cm-s-dracula span.cm-meta {
-    color: #9a7ecc
+    color: #9a7ecc;
 }
 
 .cm-s-eclipse span.cm-meta {
-    color: #3f7f7f
+    color: #3f7f7f;
 }
 
 .result-frame {
@@ -357,14 +357,14 @@ textarea:focus-visible {
     height: 100%;
     border: none;
     background-color: #fff;
-    flex-grow: 1
+    flex-grow: 1;
 }
 
 #toast,
 .modal-content {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    opacity: 0
+    opacity: 0;
 }
 
 #resizer {
@@ -376,33 +376,33 @@ textarea:focus-visible {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 0
+    margin: 10px 0;
 }
 
 #error-overlay,
 #toast {
     color: var(--text-color);
-    align-items: center
+    align-items: center;
 }
 
 #resizer.active,
 #resizer:hover {
-    background-color: rgba(138, 121, 247, .2)
+    background-color: rgba(138, 121, 247, 0.2);
 }
 
 #resizer::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 4px;
     height: 45px;
     background-color: var(--border-color);
-    border-radius: 4px
+    border-radius: 4px;
 }
 
 #resizer.active::after,
 #resizer:hover::after,
 .setting-item.active:hover {
-    background-color: var(--accent-hover)
+    background-color: var(--accent-hover);
 }
 
 #toast {
@@ -416,18 +416,18 @@ textarea:focus-visible {
     transform: translate(-50%, 20px);
     border: 1px solid var(--border-color);
     display: flex;
-    gap: 12px
+    gap: 12px;
 }
 
 #toast.show {
     opacity: 1;
     transform: translate(-50%, 0);
-    visibility: visible
+    visibility: visible;
 }
 
 .toast-icon {
     width: 22px;
-    height: 22px
+    height: 22px;
 }
 
 #error-overlay,
@@ -437,7 +437,7 @@ textarea:focus-visible {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--modal-overlay-bg)
+    background: var(--modal-overlay-bg);
 }
 
 #error-overlay {
@@ -448,7 +448,7 @@ textarea:focus-visible {
     text-align: center;
     z-index: 9999;
     font-size: 1.2em;
-    padding: 20px
+    padding: 20px;
 }
 
 .modal-overlay {
@@ -460,13 +460,13 @@ textarea:focus-visible {
     z-index: 1001;
     opacity: 0;
     visibility: hidden;
-    transition: opacity var(--transition-speed) ease-in-out, visibility 0s var(--transition-speed) linear
+    transition: opacity var(--transition-speed) ease-in-out, visibility 0s var(--transition-speed) linear;
 }
 
 .modal-overlay.show {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0s
+    transition-delay: 0s;
 }
 
 .modal-content {
@@ -476,39 +476,39 @@ textarea:focus-visible {
     width: 90%;
     max-width: 500px;
     text-align: left;
-    transform: translateY(30px) scale(.95);
-    transition: transform var(--transition-speed) cubic-bezier(.25, .46, .45, .94), opacity var(--transition-speed) ease-in-out
+    transform: translateY(30px) scale(0.95);
+    transition: transform var(--transition-speed) cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity var(--transition-speed) ease-in-out;
 }
 
 .modal-overlay.show .modal-content {
     transform: translateY(0) scale(1);
-    opacity: 1
+    opacity: 1;
 }
 
 .modal-content h3 {
     margin-top: 0;
     margin-bottom: 1.5rem;
     color: var(--accent-color);
-    text-align: center
+    text-align: center;
 }
 
 .modal-content p {
     margin-bottom: 2rem;
     line-height: 1.6;
-    text-align: center
+    text-align: center;
 }
 
 .modal-buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-top: 1.5rem
+    margin-top: 1.5rem;
 }
 
 .settings-grid {
     display: flex;
     flex-direction: column;
-    gap: .75rem
+    gap: 0.75rem;
 }
 
 .setting-item {
@@ -519,34 +519,34 @@ textarea:focus-visible {
     padding: 10px 16px;
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    transition: .2s;
+    transition: 0.2s;
     cursor: pointer;
-    font-weight: 600
+    font-weight: 600;
 }
 
 .setting-item.active {
     background-color: var(--accent-color);
     color: #fff;
-    border-color: var(--accent-color)
+    border-color: var(--accent-color);
 }
 
 .settings-divider {
     height: 1px;
     background: var(--border-color);
-    margin: .5rem 0;
-    border: none
+    margin: 0.5rem 0;
+    border: none;
 }
 
 .settings-subtitle {
     color: var(--accent-color);
     font-size: 1rem;
     font-weight: 700;
-    margin: 1rem 0 .5rem;
-    padding-bottom: .5rem;
-    border-bottom: 1px solid var(--border-color)
+    margin: 1rem 0 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
-@media (prefers-reduced-motion:reduce) {
+@media (prefers-reduced-motion: reduce) {
 
     *,
     ::after,
@@ -554,50 +554,50 @@ textarea:focus-visible {
         animation-duration: 1ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0s !important;
-        scroll-behavior: auto !important
+        scroll-behavior: auto !important;
     }
 }
 
-@media (max-width:900px) {
+@media (max-width: 900px) {
     .header {
         grid-template-columns: 1fr;
-        justify-items: center
+        justify-items: center;
     }
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
     .container {
         flex-direction: column;
-        height: auto
+        height: auto;
     }
 
     #resizer {
-        display: none
+        display: none;
     }
 
     .editor-container,
     .result-container {
         margin: 5px 10px;
-        min-height: 45vh
+        min-height: 45vh;
     }
 
     .header-center .button-group,
     .header-right .button-group {
         justify-content: center;
-        flex-basis: 100%
+        flex-basis: 100%;
     }
 }
 
 #error-overlay,
 .error-icon svg {
     width: 100%;
-    height: 100%
+    height: 100%;
 }
 
 .error-modal h3,
 .error-modal p {
     margin: 0;
-    color: var(--text-color)
+    color: var(--text-color);
 }
 
 #error-overlay {
@@ -611,7 +611,7 @@ textarea:focus-visible {
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    padding: 20px
+    padding: 20px;
 }
 
 .error-modal {
@@ -627,27 +627,27 @@ textarea:focus-visible {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    animation: .4s ease-out forwards fadeIn
+    animation: 0.4s ease-out forwards fadeIn;
 }
 
 .error-icon {
     width: 50px;
     height: 50px;
     color: var(--red);
-    margin-bottom: .5rem
+    margin-bottom: 0.5rem;
 }
 
 .error-modal h3 {
     font-size: 1.75rem;
-    font-weight: 700
+    font-weight: 700;
 }
 
 .error-modal p {
     line-height: 1.6;
-    opacity: .85;
-    font-size: 1rem
+    opacity: 0.85;
+    font-size: 1rem;
 }
 
 #error-refresh-btn {
-    margin-top: 1rem
+    margin-top: 1rem;
 }
