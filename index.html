@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dene ve Öğren!</title>
+    <title data-lang-key="title">Dene ve Öğren!</title>
     <!-- CodeMirror CSS -->
     <link rel="stylesheet" href="lib/codemirror.min.css">
     <link rel="stylesheet" href="lib/dracula.min.css">
@@ -24,52 +24,55 @@
             <div class="error-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
             </div>
-            <h3>Yükleme Hatası</h3>
-            <p>Gerekli editör kütüphaneleri yüklenemedi.<br>Lütfen internet bağlantınızı kontrol edip reklam engelleyicileri (ad-blockers) devre dışı bıraktıktan sonra tekrar deneyin.</p>
+            <h3 data-lang-key="loadErrorTitle">Yükleme Hatası</h3>
+            <p data-lang-key="loadErrorMsg">Gerekli editör kütüphaneleri yüklenemedi.<br>Lütfen internet bağlantınızı kontrol edip reklam engelleyicileri (ad-blockers) devre dışı bıraktıktan sonra tekrar deneyin.</p>
             <button id="error-refresh-btn" class="button">
                 <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-                <span>Sayfayı Yenile</span>
+                <span data-lang-key="refreshPage">Sayfayı Yenile</span>
             </button>
         </div>
     </div>
     <div class="header">
         <div class="header-left">
-            <div class="logo">Dene ve Öğren!</div>
+            <div class="logo" data-lang-key="logoText">Dene ve Öğren!</div>
         </div>
         <div class="header-center">
             <div class="button-group">
-                <button class="button run-button" id="run-btn" title="Kodu Çalıştır (Ctrl+R)">
+                <button class="button run-button" id="run-btn" data-lang-title="runTooltip">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    <span>Çalıştır</span>
+                    <span data-lang-key="run">Çalıştır</span>
                 </button>
-                <button class="button format-button" id="format-btn" title="Kodu Biçimlendir (Ctrl+Shift+F)">
+                <button class="button format-button" id="format-btn" data-lang-title="formatTooltip">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                    <span>Biçimlendir</span>
+                    <span data-lang-key="format">Biçimlendir</span>
                 </button>
-                <button class="button" id="separate-btn" title="Kodları Ayır">
+                <button class="button" id="separate-btn" data-lang-title="separateTooltip">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                    <span id="separate-btn-text">Dilleri Ayır</span>
+                    <span id="separate-btn-text" data-lang-key="separate" data-lang-key-alt="combine">Dilleri Ayır</span>
                 </button>
-                <button class="button save-button" id="save-btn" title="Dosyayı Kaydet (Ctrl+S)">
+                <button class="button save-button" id="save-btn" data-lang-title="saveTooltip">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                    <span>Kaydet</span>
+                    <span data-lang-key="save">Kaydet</span>
                 </button>
-                 <button class="button revert-button" id="revert-btn" title="Değişiklikleri Geri Al (Ctrl+Alt+R)">
+                 <button class="button revert-button" id="revert-btn" data-lang-title="revertTooltip">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                    <span>Geri Al</span>
+                    <span data-lang-key="revert">Geri Al</span>
                 </button>
-                <button class="button clear-button" id="clear-btn" title="Sonucu Temizle">
+                <button class="button clear-button" id="clear-btn" data-lang-title="clearTooltip">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                    <span>Temizle</span>
+                    <span data-lang-key="clear">Temizle</span>
                 </button>
             </div>
         </div>
         <div class="header-right">
             <div class="button-group">
-                <button class="button" id="settings-btn" title="Ayarlar">
+                <button class="button" id="info-btn" data-lang-title="infoTooltip">
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </button>
+                <button class="button" id="settings-btn" data-lang-title="settingsTooltip">
                      <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 </button>
-                <button class="button" id="theme-btn" title="Temayı Değiştir">
+                <button class="button" id="theme-btn" data-lang-title="themeTooltip">
                     <svg class="button-icon" id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
             </div>
@@ -80,7 +83,7 @@
             <div class="pane-view" id="combined-view">
                  <div class="pane-header">
                     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
-                    <span>Editor</span>
+                    <span data-lang-key="editor">Editor</span>
                  </div>
                 <div class="editor-wrapper">
                     <textarea id="code-editor"></textarea>
@@ -124,7 +127,7 @@
         <div class="result-container" id="result-container">
             <div class="pane-header">
                  <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect><line x1="2" y1="9" x2="22" y2="9"></line><line x1="8" y1="21" x2="8" y2="9"></line></svg>
-                <span>Sonuç</span>
+                <span data-lang-key="result">Sonuç</span>
             </div>
             <iframe id="result-frame" class="result-frame" sandbox="allow-scripts"></iframe>
         </div>
@@ -135,22 +138,39 @@
     </div>
     <div id="confirm-modal" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modal-title">Eylemi Onayla</h3>
+            <h3 id="modal-title" data-lang-key="confirmAction">Eylemi Onayla</h3>
             <p id="modal-message">Bu işlemi yapmak istediğinizden emin misiniz?</p>
             <div class="modal-buttons">
-                <button id="modal-cancel-btn" class="button modal-close-btn">İptal</button>
-                <button id="modal-confirm-btn" class="button">Onayla</button>
+                <button id="modal-cancel-btn" class="button modal-close-btn" data-lang-key="cancel">İptal</button>
+                <button id="modal-confirm-btn" class="button" data-lang-key="confirm">Onayla</button>
             </div>
         </div>
     </div>
      <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
-            <h3>Ayarlar</h3>
+            <h3 data-lang-key="settings">Ayarlar</h3>
             <div id="settings-grid" class="settings-grid">
                 <!-- Ayar seçenekleri buraya JS ile eklenecek -->
-            </div>
+                </div>
              <div class="modal-buttons">
-                <button id="settings-close-btn" class="button modal-close-btn">Kapat</button>
+                <button id="settings-close-btn" class="button modal-close-btn" data-lang-key="close">Kapat</button>
+            </div>
+        </div>
+    </div>
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 data-lang-key="infoModalTitle">Bilgi</h3>
+            <p data-lang-key="infoModalP1" style="text-align: left;">Bu web sitesi, HTML, CSS ve JavaScript kodlarını gerçek
+                zamanlı olarak yazmanıza, test etmenize ve sonucunu anında görmenize olanak tanıyan bir online kod
+                editörüdür.</p>
+            <p data-lang-key="infoModalP2" style="text-align: left;"><strong>Özellikler:</strong> Kod renklendirme, otomatik
+                tamamlama, kod biçimlendirme, popüler kütüphaneleri (jQuery, Bootstrap vb.) ekleyebilme ve projeyi kaydetme.
+            </p>
+    
+            <p data-lang-key="infoModalP3" style="text-align: left;"></p>
+    
+            <div class="modal-buttons">
+                <button id="info-close-btn" class="button modal-close-btn" data-lang-key="close">Kapat</button>
             </div>
         </div>
     </div>
