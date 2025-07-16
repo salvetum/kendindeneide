@@ -1,4 +1,4 @@
 # KendinDeneIDE
-Online bir HTML,CSS ve Javascript ide'si.
-Daha Bir isim bulamadım.
-Yakında yeni özellikler eklemeyi düşünüyorum
+Basit ve kullanışlı bir online HTML, CSS ve JavaScript editörü.  
+Kodlarını doğrudan tarayıcıda yaz, çalıştır ve test et.  
+⚡ Yeni özellikler yolda – takipte kal!
