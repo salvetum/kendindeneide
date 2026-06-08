@@ -1,4 +1,4 @@
-# 🎨 KendinDeneIDE
+# KendinDeneIDE
 
 A modern, vibrant web-based code editor with support for HTML, CSS, and JavaScript.
 
@@ -6,12 +6,12 @@ A modern, vibrant web-based code editor with support for HTML, CSS, and JavaScri
 
 ## 🇹🇷 Türkçe
 
-Html, Css ve JavaScript kodlama desteği olan, tamamen Vibecoding ile yapılmış web tabanlı bir kod editörü.
+HTML, CSS ve JavaScript kodlama desteği olan, tamamen Vibecoding ile yapılmış web tabanlı bir kod editörü.
 
-**Planlanan Özellikler:**
-- ✨ Yeni özellikler ve geliştirmeler
-- 🔄 Kod revizyonu
-- 🎭 Glassmorphism tasarım
+**Planlanan Özellikler:** (belki)
+- Yeni özellikler ve geliştirmeler
+- Kod revizyonu
+- Glassmorphism tasarım
 
 ---
 
@@ -19,11 +19,11 @@ Html, Css ve JavaScript kodlama desteği olan, tamamen Vibecoding ile yapılmı�
 
 A web-based code editor built entirely with Vibecoding, featuring support for HTML, CSS, and JavaScript.
 
-**Planned Features:**
-- ✨ New features and improvements
-- 🔄 Code review and refinements
-- 🎭 Glassmorphism design
+**Planned Features:** (maybe)
+- New features and improvements
+- Code review and refinements
+- Glassmorphism design
 
 ---
 
-**Built with ❤️ using Vibecoding**
+**Vibecodingle yapilmsitir.（＞人＜；）**
