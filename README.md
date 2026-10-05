@@ -19,7 +19,10 @@ Prettier ile biçimlendir, JSHint/CSSLint/HTMLHint ile denetle.
 - Koyu (Dracula) / açık (Eclipse) tema, Türkçe / İngilizce arayüz
 - İçe aktarılabilir kütüphaneler: jQuery, Bootstrap 5, React 18, Vue 3
 - `localStorage` otomatik kayıt, `index.html` olarak indirme
-- Kısayollar: `Ctrl+R` çalıştır · `Ctrl+Shift+F` biçimlendir · `Ctrl+Alt+R` sıfırla · `Ctrl+S` indir
+- Arama ve değiştir (`Ctrl+F` / `Ctrl+H`), eşleşme sayacı
+- URL ile paylaşım: kodu sıkıştırıp bağlantıyı kopyala
+- Ayarlardan yazı tipi boyutu, sekme genişliği ve satır kaydırma
+- Kısayollar: `Ctrl+R` çalıştır · `Ctrl+Shift+F` biçimlendir · `Ctrl+Alt+R` sıfırla · `Ctrl+S` indir · `Ctrl+F` ara · `Ctrl+H` değiştir
 - Tüm dosyalar sayfayla birlikte gelir: internet bağlantısı gerekmez
 
 ### Geliştirme
@@ -38,15 +41,15 @@ npm run test:e2e:ui  # aynı testler arayüzle
 
 Kaynak kod `src/` altındadır:
 
-| Yol            | İçerik                                                                         |
-| -------------- | ------------------------------------------------------------------------------ |
-| `index.html`   | Uygulama iskeleti ve i18n işaretleri                                           |
-| `src/app/`     | Durum, depolama, çeviriler, DOM referansları                                   |
-| `src/core/`    | Belge oluşturma, önizleme, hata köprüsü, editör, biçimlendirme, denetleyiciler |
-| `src/ui/`      | Toast, modal, tema, dil, ayarlar, ayırıcı, konsol paneli                       |
-| `src/actions/` | Çalıştır, kaydet, biçimlendir, geri al, indir                                  |
-| `tests/`       | Vitest + jsdom birim testleri                                                  |
-| `e2e/`         | Playwright uçtan uca testleri (üç tarayıcı)                                    |
+| Yol            | İçerik                                                                                   |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| `index.html`   | Uygulama iskeleti ve i18n işaretleri                                                     |
+| `src/app/`     | Durum, depolama, çeviriler, DOM referansları                                             |
+| `src/core/`    | Belge oluşturma, önizleme, hata köprüsü, editör, paylaşım, biçimlendirme, denetleyiciler |
+| `src/ui/`      | Toast, modal, tema, dil, ayarlar, ayırıcı, konsol paneli, arama çubuğu                   |
+| `src/actions/` | Çalıştır, kaydet, biçimlendir, geri al, indir                                            |
+| `tests/`       | Vitest + jsdom birim testleri                                                            |
+| `e2e/`         | Playwright uçtan uca testleri (üç tarayıcı)                                              |
 
 ### Yayınlama
 
@@ -81,7 +84,10 @@ format it with Prettier, and lint it with JSHint, CSSLint, and HTMLHint.
 - Dark (Dracula) / light (Eclipse) themes, Turkish / English interface
 - Injectable libraries: jQuery, Bootstrap 5, React 18, Vue 3
 - Auto-save to `localStorage`, download as `index.html`
-- Shortcuts: `Ctrl+R` run · `Ctrl+Shift+F` format · `Ctrl+Alt+R` reset · `Ctrl+S` download
+- Find and replace (`Ctrl+F` / `Ctrl+H`) with match counter
+- Share via URL: the code is compressed into a copyable link
+- Font size, tab width and line wrap in settings
+- Shortcuts: `Ctrl+R` run · `Ctrl+Shift+F` format · `Ctrl+Alt+R` reset · `Ctrl+S` download · `Ctrl+F` find · `Ctrl+H` replace
 - Every file ships with the page: no internet connection required
 
 ### Development
@@ -113,6 +119,11 @@ uploads the `playwright-report` artifact.
 ### Stack
 
 Vite · TypeScript · CodeMirror 5 · Prettier · Vitest · ESLint · Playwright
+
+Not: Kod katlama (fold) ve cam efekti henüz eklenmedi. Katlama için CodeMirror 5'in
+fold eklentileri bu paket yapısında global `CodeMirror`'a kayıt olmadığı için
+işaretçiler üretilmiyor; cam efekti için ise tasarım jetonları
+(`--surface-*`, `--glass-*`) hazırlandı ve görünüm henüz değiştirilmedi.
 
 ---
 

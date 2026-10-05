@@ -52,17 +52,50 @@
 /* Tema değişkenleri                                                   */
 /* ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------ */
+/* Tema değişkenleri                                                   */
+/*                                                                     */
+/* Önce yüzey (surface) ve derinlik (elevation) ölçekleri geliyor.     */
+/* Bunlar şu an VAR OLAN değerlerin birebir kopyası: yeni bir taban    */
+/* kuruyoruz ama görünüm DEĞİŞMİYOR. Cam efekt, yeni yüzeyler veya    */
+/* gölge derinliği eklendiğinde sadece bu jetonlar oynanacak, CSS'in   */
+/* geri kalanına dokunulmayacak.                                       */
+/*                                                                     */
+/* --surface-0  uygulama zemini (en arka)                              */
+/* --surface-1  başlık, panel başlığı (yükseltilmiş)                  */
+/* --surface-2  düğme / düğme grubu                                    */
+/* --surface-3  düğme hover / ayrım                                     */
+/* --surface-4  en yüksek: modal içeriği, üzerine gelen öğeler         */
+/* ------------------------------------------------------------------ */
+
 :root {
-  --bg-color: #1e1b2e;
+  /* Yüzey ölçeği */
+  --surface-0: #1e1b2e;
+  --surface-1: #28243d;
+  --surface-2: #353052;
+  --surface-3: #4a4566;
+  --surface-4: #353052;
+
+  /* Yükseltme (elevation) ölçeği — cam öncesi iskelet */
+  --elev-1: 0 6px 16px rgba(0, 0, 0, 0.3);
+  --elev-2: 0 10px 28px rgba(0, 0, 0, 0.38);
+  --elev-3: 0 18px 48px rgba(0, 0, 0, 0.48);
+  /* Cam efekti eklendiğinde doldurulacak; şimdilik saydam. */
+  --glass-blur: 0px;
+  --glass-tint: transparent;
+  --glass-border: transparent;
+
+  /* Mevcut roller, yüzey ölçeğine bağlanıyor */
+  --bg-color: var(--surface-0);
   --text-color: #d1d1e6;
-  --header-bg: #28243d;
-  --editor-bg: #1e1b2e;
-  --result-bg: #1e1b2e;
-  --border-color: #4a4566;
+  --header-bg: var(--surface-1);
+  --editor-bg: var(--surface-0);
+  --result-bg: var(--surface-0);
+  --border-color: var(--surface-3);
   --accent-color: #8a79f7;
   --accent-hover: #a094f8;
-  --button-bg: #353052;
-  --button-hover-bg: #4a4566;
+  --button-bg: var(--surface-2);
+  --button-hover-bg: var(--surface-3);
   --modal-overlay-bg: rgba(30, 27, 46, 0.85);
   --green: #8ff0a4;
   --orange: #ffc98a;
@@ -72,28 +105,46 @@
   --font-main: 'Segoe UI', 'Roboto', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   --border-radius: 12px;
-  --shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  --shadow: var(--elev-1);
   --transition-speed: 0.3s;
 }
 
 [data-theme='light'] {
-  --bg-color: #f5f4fa;
+  /* Yüzey ölçeği — koyu temada açık, açık temada koyulaşan (artan
+     yüzey = daha koyu gölge hissi) */
+  --surface-0: #f5f4fa;
+  --surface-1: #ffffff;
+  --surface-2: #ebeaf7;
+  --surface-3: #d9d7e8;
+  --surface-4: #ffffff;
+
+  --elev-1: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --elev-2: 0 10px 28px rgba(0, 0, 0, 0.11);
+  --elev-3: 0 18px 48px rgba(0, 0, 0, 0.14);
+
+  /* Cam jetonları iki temada da açıkça yazılıyor: temaya göre farklı
+     değerler alacaklar, unutulursa sessizce yedek değere düşmesinler. */
+  --glass-blur: 0px;
+  --glass-tint: transparent;
+  --glass-border: transparent;
+
+  --bg-color: var(--surface-0);
   --text-color: #333147;
-  --header-bg: #ffffff;
-  --editor-bg: #ffffff;
-  --result-bg: #ffffff;
-  --border-color: #d9d7e8;
+  --header-bg: var(--surface-1);
+  --editor-bg: var(--surface-1);
+  --result-bg: var(--surface-1);
+  --border-color: var(--surface-3);
   --accent-color: #6a5acd;
   --accent-hover: #5a4bad;
-  --button-bg: #ebeaf7;
-  --button-hover-bg: #d9d7e8;
+  --button-bg: var(--surface-2);
+  --button-hover-bg: var(--surface-3);
   --modal-overlay-bg: rgba(245, 244, 250, 0.8);
   --green: #2ecc71;
   --orange: #f39c12;
   --red: #e74c3c;
   --blue: #3498db;
   --yellow: #f1c40f;
-  --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --shadow: var(--elev-1);
 }
 
 @keyframes fadeIn {
@@ -201,6 +252,7 @@ textarea {
   font-size: 22px;
   font-weight: 700;
   color: var(--accent-color);
+  white-space: nowrap;
   animation: 0.5s ease-out both fadeIn;
 }
 
@@ -291,6 +343,10 @@ textarea {
 
 .revert-button {
   color: var(--yellow);
+}
+
+.share-button {
+  color: var(--blue);
 }
 
 /* ------------------------------------------------------------------ */
@@ -410,7 +466,9 @@ textarea {
 .CodeMirror {
   height: 100% !important;
   font-family: var(--font-mono);
-  font-size: 16px;
+  /* Ayarlardan değişir; CodeMirror 5'te yazı tipi boyutu seçeneği yok,
+     bu yüzden CSS değişkeni üzerinden uygulanıyor. */
+  font-size: var(--editor-font-size, 13.5px);
   line-height: 1.6;
   background-color: var(--editor-bg);
 }
@@ -452,7 +510,117 @@ textarea {
 }
 
 /* ------------------------------------------------------------------ */
-/* Önizleme konsolu                                                    */
+/* Arama / değiştir çubuğu                                              */
+/* ------------------------------------------------------------------ */
+
+/* `hidden` özniteliği display:flex tarafından ezilmesin. */
+.findbar[hidden] {
+  display: none;
+}
+
+.findbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 10px;
+  background-color: var(--surface-1);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+}
+
+.findbar-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.findbar-icon {
+  position: absolute;
+  left: 9px;
+  color: var(--text-color);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.findbar-input {
+  width: 100%;
+  min-width: 0;
+  padding: 6px 9px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--surface-0);
+  color: var(--text-color);
+  font-size: 13px;
+}
+
+.findbar-field .findbar-input {
+  padding-left: 28px;
+}
+
+.findbar-input:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: -1px;
+}
+
+.findbar-count {
+  flex: 0 0 auto;
+  min-width: 62px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+.findbar-count.is-empty {
+  color: var(--red);
+  opacity: 1;
+}
+
+.findbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--surface-2);
+  color: var(--text-color);
+  font-size: 12px;
+}
+
+.findbar-btn:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.findbar-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 1px;
+}
+
+.findbar-text {
+  padding: 0 10px;
+}
+
+.findbar-close {
+  margin-left: 2px;
+}
+
+.findbar-replace {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Önizleme konsolu                                                     */
 /* ------------------------------------------------------------------ */
 
 .diagnostics {
@@ -754,6 +922,34 @@ textarea {
   flex: 1 1 auto;
 }
 
+/* Açılır listeli ayar (yazı tipi boyutu, sekme genişliği) */
+.settings-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 14px;
+}
+
+.settings-field-label {
+  opacity: 0.85;
+}
+
+.settings-select {
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.settings-select:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 1px;
+}
+
 .setting-item {
   display: flex;
   align-items: center;
@@ -891,6 +1087,43 @@ textarea {
   body {
     height: 100vh;
     overflow: hidden;
+  }
+}
+
+@media (max-width: 1400px) {
+  /* Yedi düğme 1280px'e sığmıyordu: başlık iki satıra bölünüyor,
+     logo ve tema düğmesi aşağı kayıyordu. Aralık daraltıldı. */
+  .header {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .header .button {
+    padding: 10px 11px;
+    gap: 6px;
+  }
+
+  .header .button-group {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header {
+    padding: 10px 8px;
+  }
+
+  .header .button {
+    padding: 9px 8px;
+    font-size: 13px;
+  }
+
+  .header .button-group {
+    gap: 4px;
+  }
+
+  .logo {
+    font-size: 18px;
   }
 }
 

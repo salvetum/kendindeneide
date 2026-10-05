@@ -3,6 +3,63 @@
 Bu projedeki tüm önemli değişiklikler bu dosyada belgelenir.
 Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek hazırlanmıştır.
 
+## [3.0.6] — Editör Araçları, Paylaşım ve Tasarım Tabanı
+
+### Eklendi
+
+- **URL ile paylaşım** — "Paylaş" düğmesi kodu gzip + base64url ile
+  sıkıştırıp adres çubuğunun `#code=` bölümüne yazar ve panoya kopyalar.
+  Bağlantıyı açan kişinin kodu ve seçili kütüphaneleri yüklenir. Harici
+  bağımlılık yok: tarayıcının kendi `CompressionStream` API'si kullanılıyor.
+- **`src/core/share.ts`** — `encodeShare` / `decodeShare` / `readShareHash`
+  / `buildShareUrl`. Sürüm numarası paketin içinde; tanınmayan sürüm ve
+  bozuk veri `null` döner, uygulama kayıtlı kodla devam eder ve uyarır.
+- **Arama ve değiştir (Ctrl+F / Ctrl+H)** — CodeMirror'ın kendi iletişim
+  kutusu yerine uygulamanın diline uyan bir çubuk: eşleşme sayacı,
+  sonraki/önceki, değiştir, tümünü değiştir, klavye ve fare desteği,
+  Escape ile kapanma. Editörde seçili metin arama kutusuna taşınır.
+- **`src/ui/find.ts`** — `searchcursor` üzerine kurulu. Sayım ve gezinme
+  ayrı imleçlerle yapılır (tek imleçte sayım imleci tüketiyor ve
+  "sonraki eşleşme" çalışmıyordu). "Tümünü değiştir" eşleşmeleri önce
+  topluyor, sondan başa değiştiriyor; ileri doğru değiştirirken konumlar
+  kayıyordu.
+- **Editör tercihleri** — ayar paneline yazı tipi boyutu (12 / 13.5 / 16 px),
+  sekme genişliği (2 / 4) ve satır kaydırma. Tercihler localStorage'da
+  tutulur, yenilemede korunur, sonraki editörler de uyar.
+- **Tasarım jeton tabanı** — `--surface-0…4`, `--elev-1…3`, `--glass-*`
+  jetonları. **Görünüm değişmedi**: roller hâlâ aynı renkleri veriyor.
+  Cam efekti sonradan yalnızca bu jetonlar üzerinden eklenebilecek.
+- **`tests/design-tokens.test.ts`** (5 test) — rollerin taban
+  eklenmeden önceki renkleri verdiğini sınamak için. Taban "görünmez"
+  olmalı şartının doğrudan testi.
+
+### Düzeltildi
+
+- **Sayım döngüsü gezinmeyi kilitliyordu.** Arama sonuçlarını sayan
+  döngü aynı imleci tüketiyor, "sonraki eşleşme" çalışmıyor ve seçim
+  boş kalıyordu.
+- **"Tümünü değiştir" kodun bir kısmını değiştiriyordu** ya da hiç
+  değiştirmiyordu: eşleşme uzunluğu değişince sonraki konumlar
+  kayıyordu.
+
+### Bilinçli olarak ertelendi
+
+- **Kod katlama.** `foldgutter` eklentisi yükleniyor ve boş çizgi
+  oluşuyor, ancak CM5'in fold yardımcıları (`brace-fold`, `comment-fold`,
+  `indent-fold`, `xml-fold`) bu ESM paketi altında global CodeMirror'a
+  kayıt olmadığı için hiçbir işaretçi üretilmiyor (ölçüldü: 3 gutter
+  var, 0 işaretçi; `getHelpers(pos,'fold')` yalnızca 2 kayıt döndürüyor).
+  Boş bir çizgi göstermektense özellik kapalı bırakıldı. Düzeltme
+  kendi `rangeFinder`'ımızı yazmakla mümkün, ayrı iş olarak yapılacak.
+  Not: `foldGutter: true` tek başına yetmiyor — eklenti `opts.gutter`
+  değerini gutter kimliği olarak kullanıyor, `true` verildiğinde
+  `undefined` kalıyor ve işaretçiler hiç çizilmiyor.
+
+### Doğrulama
+
+- `npm run check` → typecheck + lint + **122 birim testi** + biçim temiz
+- `npx playwright test` → **156 test** (chromium + firefox + webkit)
+
 ## [3.0.5] — Önizleme Konsolu
 
 Kullanıcının JavaScript hataları iframe'in içinde sessizce kayboluyordu.

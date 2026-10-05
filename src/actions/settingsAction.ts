@@ -2,7 +2,9 @@ import { isLibraryKey } from '../app/constants';
 import { isLang, t } from '../app/i18n';
 import { state } from '../app/state';
 import { STORAGE_KEYS, setBoolean, setJson, setString } from '../app/storage';
-import type { Lang, SettingKey } from '../app/types';
+import type { ChoiceSettingKey, Lang, SettingKey } from '../app/types';
+import { applyFontSize, applyTabSize, applyWordWrap } from '../core/editorOptions';
+import { isFontSize, isTabSize } from '../core/editorPrefs';
 import { renderDiagnostics } from '../ui/diagnostics';
 import { applyLanguage } from '../ui/language';
 import { renderSettings } from '../ui/settings';
@@ -13,9 +15,27 @@ import { runCode } from './run';
 export function setLanguage(lang: Lang): void {
   applyLanguage(lang);
   setString(STORAGE_KEYS.language, lang);
-  renderSettings({ onToggle: handleToggle });
+  renderSettings({ onToggle: handleToggle, onChoice: handleChoice });
   // Konsol girdileri çalışma zamanında üretildiği için yeniden basılmaları gerekir.
   renderDiagnostics();
+}
+
+/** Açılır listeden yeni değer seçildiğinde. */
+export function handleChoice(key: ChoiceSettingKey, value: string): void {
+  if (key === 'editorFontSize') {
+    if (!isFontSize(value)) return;
+    state.editorFontSize = value;
+    setString(STORAGE_KEYS.editorFontSize, value);
+    applyFontSize(value);
+    return;
+  }
+
+  if (key === 'editorTabSize') {
+    if (!isTabSize(value)) return;
+    state.editorTabSize = value;
+    setString(STORAGE_KEYS.editorTabSize, value);
+    applyTabSize(value);
+  }
 }
 
 function announceToggle(labelKey: string, active: boolean): void {
@@ -40,7 +60,7 @@ export function handleToggle(key: SettingKey, active: boolean): void {
       // Kapatmak bilinçli olarak kaydedilmiş kodu ve kütüphane seçimlerini siler.
       clearSavedCode();
       state.libraries = [];
-      renderSettings({ onToggle: handleToggle });
+      renderSettings({ onToggle: handleToggle, onChoice: handleChoice });
     }
     return;
   }
@@ -49,6 +69,14 @@ export function handleToggle(key: SettingKey, active: boolean): void {
     state.autoRunEnabled = active;
     setBoolean(STORAGE_KEYS.autoRunEnabled, active);
     announceToggle('autoRun', active);
+    return;
+  }
+
+  if (key === 'editorWordWrap') {
+    state.editorWordWrap = active;
+    setBoolean(STORAGE_KEYS.editorWordWrap, active);
+    applyWordWrap(active);
+    announceToggle('wordWrap', active);
     return;
   }
 

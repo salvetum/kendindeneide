@@ -6,7 +6,14 @@ import { markDirty, isDirty, paintTitle } from './app/dirty';
 import { getDefaultCode } from './app/defaultCode';
 import { isLang, t } from './app/i18n';
 import { state } from './app/state';
-import { STORAGE_KEYS, getBoolean, getJson, getString, isStringArray } from './app/storage';
+import {
+  STORAGE_KEYS,
+  getBoolean,
+  getJson,
+  getString,
+  isStringArray,
+  setJson,
+} from './app/storage';
 import { isLibraryKey } from './app/constants';
 import type { EditorSlot } from './app/state';
 import type { LibraryKey } from './app/types';
@@ -15,8 +22,11 @@ import { persistNow } from './actions/persist';
 import { combineView, requestRevert, separateView } from './actions/revert';
 import { resetPreview, runCode } from './actions/run';
 import { saveFile } from './actions/saveFile';
-import { handleToggle } from './actions/settingsAction';
+import { shareCurrentCode } from './actions/shareAction';
+import { handleChoice, handleToggle } from './actions/settingsAction';
 import { buildRunnableDocument } from './core/compose';
+import { applyFontSize } from './core/editorOptions';
+import { isFontSize, isTabSize } from './core/editorPrefs';
 import {
   applyLintToAll,
   applyThemeToEditors,
@@ -26,13 +36,16 @@ import {
   setActiveSlot,
   setChangeHandler,
 } from './core/editors';
+import { readShareHash, decodeShare } from './core/share';
 import { ensureLinters } from './core/linters';
 import { initPreview } from './core/preview';
 import { applyLanguage } from './ui/language';
 import { initDiagnostics } from './ui/diagnostics';
+import { closeFindbar, initFindbar, isFindbarOpen, openFindbar } from './ui/find';
 import { initModals, openModal } from './ui/modal';
 import { initResizer } from './ui/resizer';
 import { initSettingsClicks, renderSettings } from './ui/settings';
+import { showToast } from './ui/toast';
 import { initTheme, toggleTheme } from './ui/theme';
 
 /* ------------------------------------------------------------------ */
@@ -97,6 +110,9 @@ function bindHeaderActions(): void {
       case 'clear-btn':
         resetPreview();
         break;
+      case 'share-btn':
+        void shareCurrentCode();
+        break;
       case 'settings-btn':
         openModal(dom.settingsModal);
         break;
@@ -123,6 +139,13 @@ function bindHeaderActions(): void {
 
 function bindShortcuts(): void {
   document.addEventListener('keydown', (event) => {
+    // Arama çubuğu açıkken Escape önce onu kapatsın.
+    if (event.key === 'Escape' && isFindbarOpen()) {
+      event.preventDefault();
+      closeFindbar();
+      return;
+    }
+
     if (!event.ctrlKey && !event.metaKey) return;
     const key = event.key.toLowerCase();
 
@@ -136,8 +159,15 @@ function bindShortcuts(): void {
       event.preventDefault();
       runCode();
     } else if (key === 'f' && event.shiftKey) {
+      // Ctrl+Shift+F zaten biçimlendirmeye bağlı; arama düz Ctrl+F ile açılır.
       event.preventDefault();
       void formatEditors();
+    } else if (key === 'f') {
+      event.preventDefault();
+      openFindbar({ focusReplace: false });
+    } else if (key === 'h') {
+      event.preventDefault();
+      openFindbar({ focusReplace: true });
     }
   });
 
@@ -185,6 +215,12 @@ function restoreState(): void {
   state.libraries = getJson(STORAGE_KEYS.selectedLibraries, [], isStringArray).filter(
     (key): key is LibraryKey => isLibraryKey(key),
   );
+
+  const savedFontSize = getString(STORAGE_KEYS.editorFontSize);
+  state.editorFontSize = isFontSize(savedFontSize) ? savedFontSize : 'medium';
+  const savedTabSize = getString(STORAGE_KEYS.editorTabSize);
+  state.editorTabSize = isTabSize(savedTabSize) ? savedTabSize : '4';
+  state.editorWordWrap = getBoolean(STORAGE_KEYS.editorWordWrap, true);
 }
 
 function initCombinedEditor(): void {
@@ -196,6 +232,31 @@ function initCombinedEditor(): void {
   markDirty(false);
 }
 
+/**
+ * Adres çubuğunda paylaşılan kod varsa onu kullan. Çözülemezse kayıtlı
+ * kodla devam edilir ve kullanıcıya söylenir.
+ */
+async function applySharedCode(): Promise<void> {
+  const encoded = readShareHash(window.location.hash);
+  if (encoded === null) return;
+
+  const payload = await decodeShare(encoded);
+  if (!payload) {
+    showToast(t(state.lang, 'shareInvalid'), 'warning');
+    return;
+  }
+
+  state.libraries = payload.libs.filter((key): key is LibraryKey => isLibraryKey(key));
+  setJson(STORAGE_KEYS.selectedLibraries, state.libraries);
+  renderSettings({ onToggle: handleToggle, onChoice: handleChoice });
+
+  const combined = requireEditor('code');
+  combined.setValue(payload.code);
+  markDirty(true);
+  runCode(true);
+  showToast(t(state.lang, 'shareLoaded'), 'success');
+}
+
 function showFatalError(): void {
   const overlay = document.getElementById('error-overlay');
   if (overlay) overlay.style.display = 'flex';
@@ -203,22 +264,25 @@ function showFatalError(): void {
 
 function boot(): void {
   restoreState();
+  applyFontSize(state.editorFontSize);
 
   initTheme();
   applyLanguage(state.lang);
   paintTitle();
 
-  renderSettings({ onToggle: handleToggle });
+  renderSettings({ onToggle: handleToggle, onChoice: handleChoice });
   initSettingsClicks();
   initModals();
   initPreview();
   initDiagnostics();
+  initFindbar();
   initResizer();
   initCombinedEditor();
 
   bindHeaderActions();
   bindShortcuts();
 
+  void applySharedCode();
   runCode(true);
 
   // Linterlar (JSHint/CSSLint/HTMLHint ~670 KB) ilk boyamadan sonra, boşta

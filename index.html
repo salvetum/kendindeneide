@@ -124,6 +124,23 @@
             </svg>
             <span data-lang-key="clear">Temizle</span>
           </button>
+          <button class="button share-button" id="share-btn" data-lang-title="share">
+            <svg
+              class="button-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path>
+            </svg>
+            <span data-lang-key="share">Paylaş</span>
+          </button>
         </div>
       </div>
       <div class="header-right">
@@ -194,6 +211,124 @@
 
     <main class="container">
       <div class="editor-container" id="editor-container">
+        <!--
+          Arama / değiştir çubuğu. KodMirror'ın kendi arama iletişim kutusu
+          yerine uygulamanın diline ve tasarımına uyan bir çubuk kullanılıyor:
+          tema değişiyor, kısayollar çalışıyor, mobilde sığabiliyor.
+          Editör kabının İLK çocuğu; flex öğesi olarak editörü aşağı iter,
+          üzerine binmez. `hidden` özniteliği CSS tarafından ezilmemeli.
+        -->
+        <div class="findbar" id="findbar" role="search" hidden>
+          <div class="findbar-field">
+            <svg
+              class="findbar-icon"
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-3.5-3.5" />
+            </svg>
+            <input
+              type="text"
+              id="find-input"
+              class="findbar-input"
+              data-lang-aria="search"
+              data-lang-title="search"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Ara"
+            />
+          </div>
+          <span class="findbar-count" id="find-count" aria-live="polite"></span>
+          <button type="button" class="findbar-btn" id="find-prev" data-lang-title="findPrev">
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              stroke="currentColor"
+              stroke-width="2.4"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M18 15l-6-6-6 6" />
+            </svg>
+          </button>
+          <button type="button" class="findbar-btn" id="find-next" data-lang-title="findNext">
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              stroke="currentColor"
+              stroke-width="2.4"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="findbar-btn findbar-close"
+            id="find-close"
+            data-lang-title="close"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              stroke="currentColor"
+              stroke-width="2.4"
+              fill="none"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+          <div class="findbar-replace">
+            <input
+              type="text"
+              id="replace-input"
+              class="findbar-input"
+              data-lang-aria="replaceWith"
+              data-lang-title="replaceWith"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Değiştir"
+            />
+            <button
+              type="button"
+              class="findbar-btn findbar-text"
+              id="replace-one"
+              data-lang-key="replaceOne"
+            >
+              Değiştir
+            </button>
+            <button
+              type="button"
+              class="findbar-btn findbar-text"
+              id="replace-all"
+              data-lang-key="replaceAll"
+            >
+              Tümünü
+            </button>
+          </div>
+        </div>
+
         <div class="pane-view" id="combined-view">
           <div class="pane-header">
             <svg

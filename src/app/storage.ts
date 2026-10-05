@@ -10,6 +10,9 @@ export const STORAGE_KEYS = {
   autoRunEnabled: 'autoRunEnabled',
   selectedLibraries: 'selectedLibraries',
   editorContent: 'liveCodeEditorContent',
+  editorFontSize: 'editorFontSize',
+  editorTabSize: 'editorTabSize',
+  editorWordWrap: 'editorWordWrap',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

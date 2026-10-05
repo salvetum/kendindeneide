@@ -1,4 +1,4 @@
-import type { EditorMode, Lang, LibraryKey, Theme } from './types';
+import type { EditorFontSize, EditorMode, EditorTabSize, Lang, LibraryKey, Theme } from './types';
 
 export type EditorSlot = 'code' | 'html' | 'css' | 'js';
 
@@ -22,6 +22,10 @@ export const state = {
   activeSlot: 'html' as EditorSlot,
   saveCodeEnabled: false,
   autoRunEnabled: false,
+  /** Editör görünüm tercihleri. */
+  editorFontSize: 'medium' as EditorFontSize,
+  editorTabSize: '4' as EditorTabSize,
+  editorWordWrap: true,
   libraries: [] as LibraryKey[],
   /** Programatik setValue sırasında change kaynaklı yan etkileri bastır. */
   suppressEffects: false,

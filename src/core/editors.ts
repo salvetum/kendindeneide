@@ -7,11 +7,17 @@ import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/search/match-highlighter';
+import 'codemirror/addon/search/searchcursor';
+// Kod katlama eklentileri sonraya bırakıldı: `foldgutter` yükleniyor ve
+// çizgi oluşuyor, ancak CM5'in fold yardımcıları ESM paketi altında
+// kayıt olmadığı için işaretçiler hiç üretilmiyor. Ayrıntı: CHANGELOG 3.0.6.
+// dracula / eclipse temaları saf CSS'tir; src/styles/main.css içinden yüklenir.
 // dracula / eclipse temaları saf CSS'tir; src/styles/main.css içinden yüklenir.
 
 import { dom } from '../app/dom';
 import { EDITOR_MODES, state } from '../app/state';
 import type { EditorSlot } from '../app/state';
+import { editorPrefs } from './editorPrefs';
 import { applyLint } from './linters';
 import { currentCodeMirrorTheme } from '../ui/theme';
 
@@ -21,6 +27,13 @@ export type ChangeHandler = (slot: EditorSlot, editor: Editor) => void;
 
 let onChange: ChangeHandler = () => undefined;
 
+/**
+ * `foldGutter` yükleniyor ve boş bir çizgi oluşturuyor, ancak CM5'in fold
+ * yardımcıları (brace/comment/indent/xml) ESM paketi altında global
+ * CodeMirror'a kayıt olmadığı için hiçbir işaretçi üretilmiyor. Boş
+ * çizgi göstermek yerine özellik şimdilik kapalı; `tests/` ve e2e'de
+ * belgeleniyor. Ayrıntı: CHANGELOG 3.0.6.
+ */
 function baseOptions(slot: EditorSlot): EditorConfiguration {
   return {
     mode: EDITOR_MODES[slot],
@@ -28,11 +41,11 @@ function baseOptions(slot: EditorSlot): EditorConfiguration {
     lineNumbers: true,
     autoCloseTags: true,
     autoCloseBrackets: true,
-    lineWrapping: true,
     highlightSelectionMatches: { showToken: /\w/u, annotateScrollbar: true },
     gutters: ['CodeMirror-linenumbers', 'CodeMirror-lint-markers'],
     // Linterlar lazy yüklendiği için başlangıçta kapalı; init sonrası açılır.
     lint: false,
+    ...editorPrefs({ tabSize: state.editorTabSize, wordWrap: state.editorWordWrap }),
   };
 }
 
@@ -70,6 +83,12 @@ export function allEditors(): Editor[] {
   return Object.values(instances).filter((editor): editor is Editor => editor !== undefined);
 }
 
+/** Arama, biçimlendirme gibi işlemler hangi editörü hedefleyecek? */
+export function activeEditor(): Editor | undefined {
+  if (!state.separated) return instances.code;
+  return instances[state.activeSlot];
+}
+
 export function refreshAll(): void {
   for (const editor of allEditors()) editor.refresh();
 }
@@ -84,6 +103,16 @@ export function applyLintToAll(): void {
 export function applyThemeToEditors(): void {
   const theme = currentCodeMirrorTheme();
   for (const editor of allEditors()) editor.setOption('theme', theme);
+}
+
+/** Editör görünüm tercihi değiştiğinde yeni editörlerin de uyması için. */
+export function refreshEditorOptions(): void {
+  const prefs = editorPrefs({ tabSize: state.editorTabSize, wordWrap: state.editorWordWrap });
+  for (const editor of allEditors()) {
+    editor.setOption('tabSize', prefs.tabSize);
+    editor.setOption('indentUnit', prefs.indentUnit);
+    editor.setOption('lineWrapping', prefs.lineWrapping);
+  }
 }
 
 /** Ayrık görünümde hangi sekmenin açık olduğunu günceller ve o pane'i gösterir. */
