@@ -103,6 +103,15 @@ describe('uygulama açılışı', () => {
     expect(frame.getAttribute('sandbox')).toContain('allow-modals');
   });
 
+  it('preview çerçevesinde allow-same-origin açıktır', () => {
+    // WebKit yalnızca opaque origin'li belgelerde hata detaylarını maskeliyor
+    // ("Script error.", lineno 0). Bu nitelik olmadan konsol paneli Safari'de
+    // hiçbir şey göstermez. Bedeli kullanıcının kodu ana pencereye erişebilir.
+    const frame = document.getElementById('result-frame') as HTMLIFrameElement;
+
+    expect(frame.getAttribute('sandbox')).toContain('allow-same-origin');
+  });
+
   it('tüm düğme ve sekme referanslarını çözer', () => {
     for (const id of [
       'run-btn',

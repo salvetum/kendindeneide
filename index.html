@@ -342,12 +342,60 @@
           </svg>
           <span data-lang-key="result">Sonuç</span>
         </div>
+        <!--
+          allow-same-origin: WebKit (Safari) yalnızca opaque origin'li belgelerde
+          hata detaylarını maskeliyor ("Script error.", satır bilgisi 0). Bu
+          nitelik olmadan konsol paneli Safari'de işe yaramaz. Bedeli: önizleme
+          kodu ana pencereye erişebilir. Sandbox zaten `allow-popups-to-escape-sandbox`
+          içerdiği için düşmanlı kod yalıtımı değil, kazara bozmayı önleme
+          amaçlıdır; uygulamanın sakladığı tek şey kullanıcının kendi kodudur.
+        -->
         <iframe
           id="result-frame"
           class="result-frame"
           title="Sonuç önizlemesi"
-          sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox"
+          sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox"
         ></iframe>
+
+        <section id="diagnostics" class="diagnostics" hidden>
+          <div class="diagnostics-bar">
+            <button
+              type="button"
+              id="diagnostics-toggle"
+              class="diagnostics-toggle"
+              aria-expanded="true"
+              aria-controls="diagnostics-list"
+            >
+              <svg
+                class="chevron"
+                viewBox="0 0 24 24"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+              <span data-lang-key="diagnostics">Konsol</span>
+              <span id="diagnostics-summary" class="diagnostics-summary"></span>
+            </button>
+            <button
+              type="button"
+              id="diagnostics-clear"
+              class="diagnostics-clear"
+              data-lang-key="clear"
+              data-lang-title="clearTooltip"
+            >
+              Temizle
+            </button>
+          </div>
+          <ol id="diagnostics-list" class="diagnostics-list" aria-live="polite"></ol>
+        </section>
       </div>
     </main>
 

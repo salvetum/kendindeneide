@@ -30,6 +30,53 @@ test.describe(' açılış', () => {
   });
 });
 
+test.describe('yerleşim', () => {
+  test.beforeEach(async ({ page }) => {
+    await openApp(page);
+  });
+
+  test('sayfa viewport içine sığıyor, kod ne kadar uzun olursa olsun', async ({ page }) => {
+    // Uzun kodda `.editor-wrapper` ve iframe içerik yüksekliğini page'e
+    // taşıyordu: 860px'lik pencerede 1391px'lik sayfa, yani başlık
+    // görünmez oluyordu. Kabuk `height: 100vh` ile sabitlenmeli.
+    await setEditorValue(
+      page,
+      'code',
+      Array.from({ length: 120 }, (_, i) => `<p>Satır ${i + 1}</p>`).join('\n'),
+    );
+    await expect
+      .poll(() => page.evaluate(() => document.body.scrollHeight - window.innerHeight))
+      .toBe(0);
+  });
+
+  test('konsol paneli açılınca önizleme küçülüyor, panel ekrana sığıyor', async ({ page }) => {
+    await setEditorValue(
+      page,
+      'code',
+      [
+        '<script>',
+        'console.warn("bir uyarı");',
+        'document.querySelector("#yok").click();',
+        '</script>',
+      ].join('\n'),
+    );
+    await page.locator('#run-btn').click();
+    const panel = page.locator('#diagnostics');
+    await expect(panel).toBeVisible();
+
+    const frame = await page.locator('#result-frame').boundingBox();
+    const diag = await panel.boundingBox();
+    const viewport = page.viewportSize();
+    expect(frame).not.toBeNull();
+    expect(diag).not.toBeNull();
+    expect(viewport).not.toBeNull();
+    // Önizleme panelin altına taşmıyor.
+    expect(frame!.y + frame!.height).toBeLessThanOrEqual(diag!.y + 1);
+    // Panel pencerenin dışına taşmıyor.
+    expect(diag!.y + diag!.height).toBeLessThanOrEqual(viewport!.height);
+  });
+});
+
 test.describe(' </script> kaçışı', () => {
   test.beforeEach(async ({ page }) => {
     await openApp(page);

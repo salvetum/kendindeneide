@@ -105,7 +105,7 @@ describe('buildPreviewDocument', () => {
 
     expect(doc).toContain('<h1>Başlık</h1>');
     expect(doc).toMatch(/<style>h1 \{ color: blue; \}<\/style>/u);
-    expect(doc).toMatch(/<script>console\.log\(42\);<\/script>/u);
+    expect(doc).toMatch(/<script[^>]*>console\.log\(42\);<\/script>/u);
     expect(doc).toMatch(/^<!DOCTYPE html>/u);
   });
 

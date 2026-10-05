@@ -3,6 +3,7 @@ import { isLang, t } from '../app/i18n';
 import { state } from '../app/state';
 import { STORAGE_KEYS, setBoolean, setJson, setString } from '../app/storage';
 import type { Lang, SettingKey } from '../app/types';
+import { renderDiagnostics } from '../ui/diagnostics';
 import { applyLanguage } from '../ui/language';
 import { renderSettings } from '../ui/settings';
 import { showToast } from '../ui/toast';
@@ -13,6 +14,8 @@ export function setLanguage(lang: Lang): void {
   applyLanguage(lang);
   setString(STORAGE_KEYS.language, lang);
   renderSettings({ onToggle: handleToggle });
+  // Konsol girdileri çalışma zamanında üretildiği için yeniden basılmaları gerekir.
+  renderDiagnostics();
 }
 
 function announceToggle(labelKey: string, active: boolean): void {

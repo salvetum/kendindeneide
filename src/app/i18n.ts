@@ -51,8 +51,10 @@ const STRINGS: Readonly<Record<Lang, Dictionary>> = {
     toastSaveError: 'Kod kaydedilemedi, depolama dolu olabilir.',
     toastFormatError: (parser) => `${parser.toUpperCase()} biçimlendirilemedi.`,
     toastSettingToggle: (label, state) => `${label} ${state === 'true' ? 'açıldı' : 'kapatıldı'}.`,
-    toastPreviewBlocked: (name) =>
-      `"${name}" sandbox içinde çalışmadı; bu bir tarayıcı güvenlik kısıtlamasıdır.`,
+    diagnostics: 'Konsol',
+    diagnosticsSummary: (errors, warnings) => `${errors} hata · ${warnings} uyarı`,
+    diagnosticsRejection: 'İşlenmemiş promise reddi',
+    diagnosticsResource: (tag, url) => `${tag} yüklenemedi: ${url}`,
     loadErrorTitle: 'Yükleme Hatası',
     loadErrorMsg:
       'Uygulama başlatılamadı.<br>Tüm dosyalar bu sayfayla birlikte gelir; internet bağlantısı veya reklam engelleyici bu hataya yol açmaz.<br>Lütfen tarayıcı önbelleğini temizleyip sayfayı yenileyin.',
@@ -107,8 +109,10 @@ const STRINGS: Readonly<Record<Lang, Dictionary>> = {
     toastFormatError: (parser) => `Could not format ${parser.toUpperCase()}.`,
     toastSettingToggle: (label, state) =>
       `${label} has been ${state === 'true' ? 'enabled' : 'disabled'}.`,
-    toastPreviewBlocked: (name) =>
-      `"${name}" did not run inside the sandbox due to a browser security restriction.`,
+    diagnostics: 'Console',
+    diagnosticsSummary: (errors, warnings) => `${errors} errors · ${warnings} warnings`,
+    diagnosticsRejection: 'Unhandled promise rejection',
+    diagnosticsResource: (tag, url) => `Could not load ${tag}: ${url}`,
     loadErrorTitle: 'Loading Error',
     loadErrorMsg:
       'The application could not start.<br>Every file ships with this page; an internet connection or an ad-blocker cannot cause this error.<br>Please clear your browser cache and reload.',

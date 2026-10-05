@@ -1,4 +1,4 @@
-import { expect, type FrameLocator, type Page } from '@playwright/test';
+import { expect, type Frame, type FrameLocator, type Page } from '@playwright/test';
 
 /** Uygulamanın ayağa kalkıp ilk kodun preview'e yansımasını bekler. */
 export async function openApp(page: Page): Promise<void> {
@@ -19,6 +19,27 @@ export async function openApp(page: Page): Promise<void> {
 
 export function preview(page: Page): FrameLocator {
   return page.frameLocator('#result-frame');
+}
+
+/**
+ * Önizleme iframe'inin `Frame` nesnesi.
+ *
+ * `frameLocator` üzerinden `innerHTML` yalnızca gövdeyi verir ve hata köprüsü
+ * `<head>`'e enjekte edildiği için yetmez. Playwright betiği kendi protokolü
+ * üzerinden enjekte ettiğinden bu, iframe'in origin'i ne olursa olsun çalışır.
+ */
+export async function previewFrame(page: Page): Promise<Frame> {
+  const handle = await page.locator('#result-frame').elementHandle();
+  if (!handle) throw new Error('Önizleme çerçevesi bulunamadı');
+  const frame = await handle.contentFrame();
+  if (!frame) throw new Error('Önizleme çerçevesinin içi okunamadı');
+  return frame;
+}
+
+/** Önizleme belgesinin tam HTML'i. */
+export async function previewHtml(page: Page): Promise<string> {
+  const frame = await previewFrame(page);
+  return frame.evaluate(() => document.documentElement.outerHTML);
 }
 
 /**

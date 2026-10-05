@@ -3,6 +3,7 @@ import { state } from '../app/state';
 import type { LibraryKey, ParsedCode } from '../app/types';
 import { requireEditor } from './editors';
 import { buildPreviewDocument, parseFullCode } from './document';
+import { diagnosticsBridgeSource } from './diagnostics';
 import { previewBaseHref } from './preview';
 
 /** Editörlerden okunan kaynak (birleşik veya ayrık görünümden bağımsız). */
@@ -57,12 +58,18 @@ export interface RunnableOptions {
    * Yalnızca preview için gerekir; kaydedilen/indirilen metne konmamalıdır.
    */
   readonly includeBaseHref?: boolean;
+  /**
+   * Preview'e hata köprüsünü enjekte et. Yalnızca çalıştırılan önizlemede
+   * gerekir; `serializeForStorage` bunu bilerek kapalı tutar.
+   */
+  readonly includeDiagnostics?: boolean;
 }
 
 /** Preview'e gönderilecek tam doküman. */
 export function buildRunnableDocument({
   includeLibraries = true,
   includeBaseHref = true,
+  includeDiagnostics = false,
 }: RunnableOptions = {}): string {
   const { htmlCode, cssCode, jsCode } = readSource();
   const { styleUrls, scriptUrls } = includeLibraries
@@ -75,14 +82,16 @@ export function buildRunnableDocument({
     baseHref: includeBaseHref ? previewBaseHref() : undefined,
     styleUrls,
     scriptUrls,
+    bridge: includeDiagnostics ? diagnosticsBridgeSource() : undefined,
   });
 }
 
 /**
  * "Kodu Sakla" için kalıcı metin.
  *
- * Kütüphane ve `<base>` eklenmez: bunlar ortam bilgisi taşır ve kullanıcının
- * kodunu bozar (indirilen dosya kendi başına çalışmalıdır).
+ * Kütüphane, `<base>` ve hata köprüsü eklenmez: bunlar ortam bilgisi taşır veya
+ * yalnızca çalıştırılan önizlemeye aittir; indirilen dosya kendi başına
+ * çalışmalıdır.
  *
  * Kasıtlı olarak Prettier'dan geçirilmez: kaydetme tuş başına değil, 800 ms
  * debounce sonrasında çalışır ve biçimlendirmek 1 MB'lık Prettier'ı her

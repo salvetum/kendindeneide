@@ -447,6 +447,143 @@ textarea {
   /* Koyu temada yükleme sırasında beyaz flaşı engeller. */
   background-color: var(--result-bg);
   flex-grow: 1;
+  /* Konsol paneli açıldığında iframe'in küçülmesini engeller. */
+  min-height: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Önizleme konsolu                                                    */
+/* ------------------------------------------------------------------ */
+
+.diagnostics {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--header-bg);
+}
+
+/* `hidden` özniteliği display:flex tarafından ezilmesin. */
+.diagnostics[hidden] {
+  display: none;
+}
+
+.diagnostics-bar {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+.diagnostics-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 9px 12px;
+  border: none;
+  background: 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.diagnostics-toggle:hover,
+.diagnostics-clear:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.diagnostics-toggle:focus-visible,
+.diagnostics-clear:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: -2px;
+}
+
+.diagnostics-toggle .chevron {
+  flex-shrink: 0;
+  transition: transform var(--transition-speed) ease;
+}
+
+.diagnostics.collapsed .diagnostics-toggle .chevron {
+  transform: rotate(-90deg);
+}
+
+.diagnostics-summary {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--red);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.diagnostics-clear {
+  border: none;
+  background: 0 0;
+  padding: 9px 12px;
+  font-size: 12px;
+}
+
+.diagnostics-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 150px;
+  overflow-y: auto;
+  border-top: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.diagnostics.collapsed .diagnostics-list {
+  display: none;
+}
+
+.diagnostics-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.diagnostics-entry:last-child {
+  border-bottom: none;
+}
+
+.diagnostics-badge {
+  flex-shrink: 0;
+  display: flex;
+  padding-top: 2px;
+}
+
+.diagnostics-badge svg {
+  width: 14px;
+  height: 14px;
+}
+
+.diagnostics-entry.error .diagnostics-badge,
+.diagnostics-entry.error .diagnostics-text {
+  color: var(--red);
+}
+
+.diagnostics-entry.warn .diagnostics-badge,
+.diagnostics-entry.warn .diagnostics-text {
+  color: var(--orange);
+}
+
+.diagnostics-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.diagnostics-at {
+  flex-shrink: 0;
+  opacity: 0.7;
+  font-size: 11px;
 }
 
 /* ------------------------------------------------------------------ */
@@ -740,6 +877,20 @@ textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0s !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Masaüstünde uygulama kabuğu viewport'a sabitlenir: kod veya önizleme
+   ne kadar uzun olursa olsun sayfa kaymaz, kaydırma panellerin içinde olur
+   (`.editor-wrapper` ve `.diagnostics-list` `overflow: auto`).
+   Aksi halde `body { min-height: 100vh }` yüzünden içerik yüksekliği
+   sayfayı uzatıyordu: 860px'lik pencerede 1391px'lik bir sayfa, yani
+   başlık görünmez oluyordu. 768px altındaki sorgu `height: auto` ile
+   akışa döndürüyor, mobilde sayfa kayması istenen davranış. */
+@media (min-width: 769px) {
+  body {
+    height: 100vh;
+    overflow: hidden;
   }
 }
 

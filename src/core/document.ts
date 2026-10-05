@@ -1,4 +1,5 @@
 import type { ParsedCode } from '../app/types';
+import { LINE_OFFSET_TOKEN, USER_SCRIPT_MARKER } from './diagnostics';
 
 /**
  * Birleşik (htmlmixed) koddan HTML / CSS / JS parçalarını ayırır ve
@@ -51,6 +52,12 @@ export interface BuildPreviewOptions {
   readonly baseHref?: string | undefined;
   readonly styleUrls?: readonly string[];
   readonly scriptUrls?: readonly string[];
+  /**
+   * Preview'in içine enjekte edilecek köprü betiği (bkz. `core/diagnostics`).
+   * `head` başına konur; head betikleri gövde betiklerinden önce çalıştığı
+   * için kullanıcının kodundan gelen hataları da yakalar.
+   */
+  readonly bridge?: string | undefined;
 }
 
 /**
@@ -60,9 +67,13 @@ export interface BuildPreviewOptions {
  * `textContent` olarak yerleştirilir; böylece `&`, `<` gibi karakterler özel
  * bir kaçış katmanına ihtiyaç duymadan taşınır. Script içeriği ayrıca
  * `escapeScriptText` ile `</script` dizisinden arındırılır.
+ *
+ * `bridge` verilirse `head` başına bir hata yakalama betiği eklenir. Bu betik
+ * yalnızca çalıştırılan önizlemede bulunmalıdır; kaydedilen ve indirilen metin
+ * `bridge`'siz üretilir.
  */
 export function buildPreviewDocument(options: BuildPreviewOptions): string {
-  const { html, css, js, baseHref, styleUrls = [], scriptUrls = [] } = options;
+  const { html, css, js, baseHref, styleUrls = [], scriptUrls = [], bridge } = options;
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
@@ -70,6 +81,18 @@ export function buildPreviewDocument(options: BuildPreviewOptions): string {
   const head = doc.head ?? doc.documentElement.appendChild(doc.createElement('head'));
   const body = doc.body ?? doc.documentElement.appendChild(doc.createElement('body'));
 
+  // Köprü, kullanıcının <head> içindeki betiklerinden bile önce çalışmalı:
+  // kullanıcının kodu `<script>` ile başlıyorsa HTML ayrıştırıcısı onu
+  // <head>'e taşır ve append ile eklenen köprüden sonra gelirdi.
+  // `prepend` kullanıldığı için köprü her zaman head'in ilk çocuğudur.
+  if (bridge) {
+    const bridgeScript = doc.createElement('script');
+    bridgeScript.textContent = escapeScriptText(bridge);
+    head.prepend(bridgeScript);
+  }
+
+  // base, köprüden sonra prepend edilir: head sırası [base, bridge, kullanıcı…]
+  // olur. Köprü hiçbir URL kullanmadığı için bu sıralama güvenlidir.
   if (baseHref) {
     const base = doc.createElement('base');
     base.setAttribute('href', baseHref);
@@ -94,8 +117,29 @@ export function buildPreviewDocument(options: BuildPreviewOptions): string {
   }
 
   const inlineScript = doc.createElement('script');
+  inlineScript.setAttribute(USER_SCRIPT_MARKER, '');
   inlineScript.textContent = escapeScriptText(js);
   body.appendChild(inlineScript);
 
-  return `<!DOCTYPE html>\n${doc.documentElement.outerHTML}`;
+  const serialized = `<!DOCTYPE html>\n${doc.documentElement.outerHTML}`;
+  return bridge ? applyLineOffset(serialized) : serialized;
+}
+
+function countLines(text: string): number {
+  return text.split('\n').length - 1;
+}
+
+/**
+ * Üretilen belgede kullanıcının `<script>`i belirli bir satırdan başlar; tarayıcı
+ * bu satırı bildirir, kullanıcı ise kendi kodundaki satırı görmek ister.
+ * Köprü betiğindeki jetonu, kullanıcı betiğinden önce kalan satır sayısıyla
+ * değiştiririz.
+ *
+ * Jeton `var LINE_OFFSET = '...';` gibi tek satırlık bir ifadede bulunduğu için
+ * değiştirme satır sayısını kaydırmaz; hesap doğru kalır.
+ */
+function applyLineOffset(html: string): string {
+  const marker = html.indexOf(`<script ${USER_SCRIPT_MARKER}`);
+  if (marker < 0) return html.replace(LINE_OFFSET_TOKEN, '0');
+  return html.replace(LINE_OFFSET_TOKEN, String(countLines(html.slice(0, marker))));
 }

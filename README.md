@@ -12,11 +12,15 @@ Prettier ile biçimlendir, JSHint/CSSLint/HTMLHint ile denetle.
 ### Özellikler
 
 - Birleşik (`htmlmixed`) ve ayrık (HTML / CSS / JS sekmeli) düzen
+- **Önizleme konsolu:** çalışma zamanı hataları (satır ve sütunla), sözdizimi
+  hataları, `console.error` / `console.warn`, işlenmemiş promise reddi ve
+  yüklenemeyen kaynaklar preview'ın altındaki panelde listelenir
 - Prettier ile biçimlendirme, JSHint + CSSLint + HTMLHint ile denetim
 - Koyu (Dracula) / açık (Eclipse) tema, Türkçe / İngilizce arayüz
 - İçe aktarılabilir kütüphaneler: jQuery, Bootstrap 5, React 18, Vue 3
 - `localStorage` otomatik kayıt, `index.html` olarak indirme
 - Kısayollar: `Ctrl+R` çalıştır · `Ctrl+Shift+F` biçimlendir · `Ctrl+Alt+R` sıfırla · `Ctrl+S` indir
+- Tüm dosyalar sayfayla birlikte gelir: internet bağlantısı gerekmez
 
 ### Geliştirme
 
@@ -34,15 +38,15 @@ npm run test:e2e:ui  # aynı testler arayüzle
 
 Kaynak kod `src/` altındadır:
 
-| Yol            | İçerik                                                           |
-| -------------- | ---------------------------------------------------------------- |
-| `index.html`   | Uygulama iskeleti ve i18n işaretleri                             |
-| `src/app/`     | Durum, depolama, çeviriler, DOM referansları                     |
-| `src/core/`    | Belge oluşturma, önizleme, editör, biçimlendirme, denetleyiciler |
-| `src/ui/`      | Toast, modal, tema, dil, ayarlar, ayırıcı                        |
-| `src/actions/` | Çalıştır, kaydet, biçimlendir, geri al, indir                    |
-| `tests/`       | Vitest + jsdom birim testleri                                    |
-| `e2e/`         | Playwright uçtan uca testleri (üç tarayıcı)                      |
+| Yol            | İçerik                                                                         |
+| -------------- | ------------------------------------------------------------------------------ |
+| `index.html`   | Uygulama iskeleti ve i18n işaretleri                                           |
+| `src/app/`     | Durum, depolama, çeviriler, DOM referansları                                   |
+| `src/core/`    | Belge oluşturma, önizleme, hata köprüsü, editör, biçimlendirme, denetleyiciler |
+| `src/ui/`      | Toast, modal, tema, dil, ayarlar, ayırıcı, konsol paneli                       |
+| `src/actions/` | Çalıştır, kaydet, biçimlendir, geri al, indir                                  |
+| `tests/`       | Vitest + jsdom birim testleri                                                  |
+| `e2e/`         | Playwright uçtan uca testleri (üç tarayıcı)                                    |
 
 ### Yayınlama
 
@@ -70,11 +74,15 @@ format it with Prettier, and lint it with JSHint, CSSLint, and HTMLHint.
 ### Features
 
 - Combined (`htmlmixed`) and split (HTML / CSS / JS tabs) layouts
+- **Preview console:** runtime errors (with line and column), syntax errors,
+  `console.error` / `console.warn`, unhandled promise rejections, and failed
+  resource loads are listed in a panel below the preview
 - Prettier formatting, JSHint + CSSLint + HTMLHint linting
 - Dark (Dracula) / light (Eclipse) themes, Turkish / English interface
 - Injectable libraries: jQuery, Bootstrap 5, React 18, Vue 3
 - Auto-save to `localStorage`, download as `index.html`
 - Shortcuts: `Ctrl+R` run · `Ctrl+Shift+F` format · `Ctrl+Alt+R` reset · `Ctrl+S` download
+- Every file ships with the page: no internet connection required
 
 ### Development
 

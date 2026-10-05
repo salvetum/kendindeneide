@@ -3,6 +3,82 @@
 Bu projedeki tüm önemli değişiklikler bu dosyada belgelenir.
 Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek hazırlanmıştır.
 
+## [3.0.5] — Önizleme Konsolu
+
+Kullanıcının JavaScript hataları iframe'in içinde sessizce kayboluyordu.
+"Çalıştır" dediğinizde kod bozuluyorsa bunu görmenin hiçbir yolu yoktu.
+Artık preview'ın altında açılır/kapanır bir konsol paneli var: çalışma zamanı
+hataları (kullanıcının kodundaki satır ve sütunla), sözdizimi hataları,
+`console.error` / `console.warn`, işlenmemiş promise reddi ve yüklenemeyen
+kaynaklar burada listelenir.
+
+### Eklendi
+
+- **Konsol paneli** — preview altında, girdi yoksa gizli; çökertilebilir,
+  "Temizle" düğmeli, en fazla 100 kayıt tutar, `aria-live="polite"` ile duyurur.
+  Hatalar kırmızı, uyarılar turuncu rozetle işaretlenir; sağda satır:sütun.
+- **`src/core/diagnostics.ts`** — preview'a enjekte edilen köprü betiği.
+  `error` (kaynak + betik), `unhandledrejection` ve `console` kaynaklarını
+  `postMessage` ile ana pencereye taşır. `console.*` sarmalanırken özgün
+  metotlar da çağrılır, geliştirici konsolunda davranış değişmez.
+- **Satır eşleme** — köprü, kullanıcının `<script>`inin belgede hangi satırdan
+  başladığını bilmez. `buildPreviewDocument` bu farkı hesaplayıp köprüye
+  gömüyor; çevrilemiyorsa satır yerine boş bırakılıyor (köprü çalışmaya
+  devam ediyor).
+- **`src/ui/diagnostics.ts`** — `MAX_ENTRIES`, satır kırpması, dil değişiminde
+  yeniden basım. Gelen mesajın kanalı **ve** `event.source`'u doğrulanıyor.
+- **`e2e/diagnostics.spec.ts`** — 14 senaryo × 3 tarayıcı (temiz kod, satır
+  bilgisi, sözdizimi hatası, console, red, kaynak uyarısı, çökert/genişlet,
+  temizleme, ayrık görünüm, köprünün kalıcı metne sızmaması, EN çevirileri).
+
+### Düzeltildi
+
+- **Yüklenemeyen kaynaklar hiç yakalanmıyordu.** `<img>`, `<link>`, `<script>`
+  hataları DOM'da **bubble etmez**; `error` dinleyicisi capture fazında
+  değildi. Kaynak uyarıları hiçbir tarayıcıda görünmüyordu.
+- **Safari'de tüm hatalar "Script error." olarak görünüyordu.** WebKit yalnızca
+  opaque origin'li belgelerde hata detaylarını maskeliyor (`event.error` boş,
+  `lineno` 0). `iframe`'e `allow-same-origin` eklendi.
+- **Köprü, kullanıcının betiğinden sonra çalışabiliyordu.** Betiği `<head>`'e
+  ekleniyordu; kullanıcının kodu `<script>` ile başlıyorsa HTML ayrıştırıcısı
+  onu da `<head>`'e taşıyor ve önce çalışıyordu. Artık `prepend` ile en başa
+  ekleniyor.
+- **Uzun kodda sayfa pencereden taşıyordu.** `body { min-height: 100vh }`
+  yüzünden `.editor-wrapper` ve önizleme `iframe`'inin içerik yüksekliği
+  belgeyi uzatıyordu: 860px'lik pencerede 1391px'lik sayfa, yani başlık
+  görünmez oluyor ve konsol paneli ekranın altına taşabiliyordu. Kabuk artık
+  masaüstünde `height: 100vh` ile viewport'a sabitleniyor; kaydırma panellerin
+  içinde. 768px altındaki sorgu `height: auto` ile akışa döndürüyor, mobilde
+  sayfa kayması korunuyor.
+
+### Karar: `allow-same-origin`
+
+Bu nitelik preview kodunun ana pencereye erişmesine izin verir. Sandbox zaten
+`allow-popups-to-escape-sandbox` içerdiğinden düşmanlı kod yalıtımı değil,
+kazara bozmayı önleme amaçlıdır; uygulamanın sakladığı tek şey kullanıcının
+kendi kodudur. Karşılığında konsol paneli Safari'de de gerçek mesaj ve satır
+numarası gösteriyor. Strict yalıtım tercih edilirse WebKit'te panel yine de
+çalışır ama yalnızca "Script error." gösterir.
+
+### Tasarım notları
+
+- Köprü `<head>`'in başına, kullanıcı betiğinden ve kütüphane betiklerinden
+  **önce** ekleniyor; aksi hâlde ilk hata kaçardı.
+- Köprü betiği `</script` dizisi içermiyor ve `eval`/`new Function`
+  kullanmıyor; `tests/diagnostics.test.ts` bunu denetliyor.
+- `LINE_OFFSET` jetonu tırnak içinde tutuluyor: değiştirilemezse `Number(...)`
+  NaN döner, satır gösterilmez ama köprü çalışmaya devam eder.
+- Köprü yalnızca **çalıştırılan** önizlemede var. Kaydedilen metne, indirilen
+  `index.html`'e ve "Birleştir" çıktısına sızmıyor.
+
+### Doğrulama
+
+- `npm run check` → typecheck + lint + **104 birim testi** + biçim kontrolü temiz
+- `npx playwright test` → **111 test** (3 tarayıcı) geçti
+- 1280×860, 1280×520 ve 390×844 pencerelerde ölçüm: masaüstünde
+  `body.scrollHeight === innerHeight`, panel açıkken önizleme küçülüyor ve
+  panel pencere içinde kalıyor; mobilde sayfa kayması beklendiği gibi sürüyor
+
 ## [3.0.4] — Çok Tarayıcılı Uçtan Uca Testler
 
 Tarayıcıya özgü hatalar (Firefox'un butonları bitmap fontla çizmesi gibi) tek

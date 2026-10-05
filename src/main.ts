@@ -29,6 +29,7 @@ import {
 import { ensureLinters } from './core/linters';
 import { initPreview } from './core/preview';
 import { applyLanguage } from './ui/language';
+import { initDiagnostics } from './ui/diagnostics';
 import { initModals, openModal } from './ui/modal';
 import { initResizer } from './ui/resizer';
 import { initSettingsClicks, renderSettings } from './ui/settings';
@@ -211,6 +212,7 @@ function boot(): void {
   initSettingsClicks();
   initModals();
   initPreview();
+  initDiagnostics();
   initResizer();
   initCombinedEditor();
 
