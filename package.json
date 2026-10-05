@@ -1,0 +1,39 @@
+{
+  "name": "kendindeneide",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Web tabanlı HTML/CSS/JavaScript kod editörü",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run format:check"
+  },
+  "dependencies": {
+    "codemirror": "^5.65.21",
+    "prettier": "^3.9.9"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/codemirror": "^5.60.18",
+    "@types/node": "^22.20.5",
+    "csslint": "^1.0.5",
+    "eslint": "^9.39.0",
+    "globals": "^17.13.0",
+    "htmlhint": "^1.9.2",
+    "jsdom": "^27.0.0",
+    "jshint": "^2.13.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.1.12",
+    "vitest": "^3.2.4"
+  }
+}

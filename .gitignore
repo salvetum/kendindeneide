@@ -1,0 +1,18 @@
+# Yerel notlar (repoya girmesin)
+NOTLAR.md
+
+# Bağımlılıklar & build çıktısı
+node_modules/
+dist/
+coverage/
+*.local
+
+# Vite
+.vite/
+
+# Editör / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
