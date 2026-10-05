@@ -3,6 +3,53 @@
 Bu projedeki tüm önemli değişiklikler bu dosyada belgelenir.
 Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek hazırlanmıştır.
 
+## [3.0.4] — Çok Tarayıcılı Uçtan Uca Testler
+
+Tarayıcıya özgü hatalar (Firefox'un butonları bitmap fontla çizmesi gibi) tek
+tarayıcıda elle bakıldığında ancak yakalanıyordu. Artık Chromium, Firefox ve
+WebKit'te otomatik olarak doğrulanıyor.
+
+### Eklendi
+
+- **Playwright altyapısı** — `@playwright/test` 1.63, üç tarayıcı projesi
+  (`chromium`, `firefox`, `webkit`), `npm run test:e2e` / `test:e2e:ui`
+- **`e2e/app.spec.ts`** — açılış, ölümcül hata ekranı, Blob URL preview,
+  `</script>` kaçışı, ayrık görünüm (ayır → düzenle → birleştir kalıcılığı),
+  sekmeler, tema geçişi, Escape ile modal
+- **`e2e/persist.spec.ts`** — "Kodu Sakla" kalıcılığı ve `<base>` birikmesi,
+  "Geri Al"in hem ekrana hem depoya yazması, kütüphane yükleme, **açılışta
+  sıfır dış istek**, JetBrains Mono'nun yerelden gelmesi, form kontrollerinin
+  gövde fontunu miras alması, biçimlendirme, her sekmenin kendi linter'ı,
+  Temizle
+- **`e2e/helpers.ts`** — `wrapper.CodeMirror` üzerinden içerik okuma/yazma
+  (otomatik parantez kapatma yüzünden tuş tuş yazmaktan güvenli), konsol hatası
+  toplama, `openSeparatedTab`
+- **CI job'u** — `.github/workflows/ci.yml` içine ayrı `e2e` job'ı; başarısızlık
+  halinde `playwright-report` artifact olarak yükleniyor
+
+### Düzeltildi
+
+- **Görünür metinli butonlarda `aria-label` kaldırıldı.** `run`, `format`,
+  `separate`, `save`, `revert`, `clear` düğmeleri hem `aria-label` hem görünür
+  metin taşıyordu; erişilebilir adı `aria-label` eziyordu. En kötüsü
+  `separate-btn`: `aria-label` "Dilleri Ayır" olarak sabit kalıp ayrık görünüme
+  geçildiğinde **bayat** bir ad okunuyordu (görünür metin "Birleştir" olmasına
+  rağmen). `aria-label` artık yalnızca ikon-only düğmelerde (bilgi, ayarlar,
+  tema) ve resizer'da var.
+
+### Tespit edilen sınırlama (davranış değişmedi, testler belgeliyor)
+
+Birleşik görünümde kullanıcının `<script>` içine ham `</script>` yazması
+HTML'in kendi kuralıdır — ayrıştırıcı script'i orada kapatır, tarayıcılar da
+böyle davranır. `escapeScriptText` bu yüzden **ayrık görünümü** korur: JS orada
+doğrudan editörden okunur, HTML ayrıştırıcısı devreye girmez. İki davranış da
+e2e testleriyle sabitlendi.
+
+### Doğrulama
+
+Üç tarayıcıda 21'er test, toplam **63 test geçti** (Chromium 153, Firefox 155,
+WebKit 26.6).
+
 ## [3.0.3] — CDN Bağımlılığı Kaldırıldı
 
 Uygulama tamamen çevrimdışı çalışır hale geldi. Artık açılışta **hiçbir dış

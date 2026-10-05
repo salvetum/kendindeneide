@@ -24,8 +24,16 @@ export default tseslint.config(
     },
   },
   {
-    files: ['tests/**/*.ts'],
-    rules: { '@typescript-eslint/no-unsafe-assignment': 'off' },
+    // Vitest ve Playwright testleri: `page.evaluate` gibi API'lar doğal olarak
+    // `any` döner; tip denetimi burada gürültüden ibaret.
+    files: ['tests/**/*.ts', 'e2e/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+    },
   },
   {
     // Yapılandırma dosyası TypeScript projesine dahil değil.

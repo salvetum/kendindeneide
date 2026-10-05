@@ -22,10 +22,14 @@ Prettier ile biçimlendir, JSHint/CSSLint/HTMLHint ile denetle.
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm run check      # tip kontrolü + lint + test + format kontrolü
-npm run build      # dist/
-npm run preview    # dist/ önizleme
+npm run dev          # http://localhost:5173
+npm run check        # tip kontrolü + lint + test + format kontrolü
+npm run build        # dist/
+npm run preview      # dist/ önizleme
+
+npx playwright install chromium firefox webkit   # ilk seferde
+npm run test:e2e     # Chromium + Firefox + WebKit uçtan uca
+npm run test:e2e:ui  # aynı testler arayüzle
 ```
 
 Kaynak kod `src/` altındadır:
@@ -38,6 +42,7 @@ Kaynak kod `src/` altındadır:
 | `src/ui/`      | Toast, modal, tema, dil, ayarlar, ayırıcı                        |
 | `src/actions/` | Çalıştır, kaydet, biçimlendir, geri al, indir                    |
 | `tests/`       | Vitest + jsdom birim testleri                                    |
+| `e2e/`         | Playwright uçtan uca testleri (üç tarayıcı)                      |
 
 ### Yayınlama
 
@@ -45,9 +50,15 @@ Kaynak kod `src/` altındadır:
 GitHub Pages'e yayınlar (`.github/workflows/deploy.yml`).
 Depo ayarlarında **Pages → Source: GitHub Actions** seçili olmalıdır.
 
+### Sürekli entegrasyon
+
+`.github/workflows/ci.yml` iki job çalıştırır: tip kontrolü / lint / format /
+birim testleri / derleme, ve üç tarayıcıda uçtan uca testler. Başarısız bir uçtan
+uca koşuda `playwright-report` artifact olarak yüklenir.
+
 ### Teknolojiler
 
-Vite · TypeScript · CodeMirror 5 · Prettier · Vitest · ESLint
+Vite · TypeScript · CodeMirror 5 · Prettier · Vitest · ESLint · Playwright
 
 ---
 
@@ -69,10 +80,14 @@ format it with Prettier, and lint it with JSHint, CSSLint, and HTMLHint.
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm run check      # typecheck + lint + test + format check
-npm run build      # dist/
-npm run preview    # preview dist/
+npm run dev          # http://localhost:5173
+npm run check        # typecheck + lint + test + format check
+npm run build        # dist/
+npm run preview      # preview dist/
+
+npx playwright install chromium firefox webkit   # first run
+npm run test:e2e     # end-to-end on Chromium + Firefox + WebKit
+npm run test:e2e:ui  # same tests with the UI runner
 ```
 
 ### Deployment
@@ -81,9 +96,15 @@ Pushing to `main` runs GitHub Actions, which builds the app and publishes it to
 GitHub Pages (`.github/workflows/deploy.yml`).
 Set **Pages → Source: GitHub Actions** in the repository settings.
 
+### Continuous integration
+
+`.github/workflows/ci.yml` runs two jobs: typecheck / lint / format / unit tests
+/ build, and the end-to-end suite on all three browsers. A failing end-to-end run
+uploads the `playwright-report` artifact.
+
 ### Stack
 
-Vite · TypeScript · CodeMirror 5 · Prettier · Vitest · ESLint
+Vite · TypeScript · CodeMirror 5 · Prettier · Vitest · ESLint · Playwright
 
 ---
 
