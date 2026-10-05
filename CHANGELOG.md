@@ -3,6 +3,43 @@
 Bu projedeki tüm önemli değişiklikler bu dosyada belgelenir.
 Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek hazırlanmıştır.
 
+## [3.0.3] — CDN Bağımlılığı Kaldırıldı
+
+Uygulama tamamen çevrimdışı çalışır hale geldi. Artık açılışta **hiçbir dış
+sunucuya istek yapılmıyor**; reklam engelleyici açıkken veya internet bağlantısı
+olmadan da uygulama açılıyor.
+
+### Düzeltildi
+
+- **JetBrains Mono artık self-hosted:** Google Fonts'a yapılan istek yerine
+  woff2 dosyaları `src/assets/fonts/` altına alındı (latin 31 kB, latin-ext
+  12 kB). Bu bir **değişken font** (`fvar` tablosu var), bu yüzden `@font-face`
+  tek ağırlık değil `400 700` aralığı ilan ediyor — aksi halde kalın metin
+  sahte-bold olarak çizilirdi
+- **latin-ext alt kümesi şart:** `ğ ş İ ı` gibi Türkçe karakterler latin
+  alt kümesinde değil, latin-ext'te yer alıyor. Yalnızca latin yüklense kod
+  editöründe bu karakterler başka bir fonta düşüyordu
+- **Hata ekranı yanıltıcıydı:** "internet bağlantınızı kontrol edip reklam
+  engelleyicileri devre dışı bırakın" yazıyordu; tüm dosyalar sayfayla
+  birlikte geldiği için bunların ikisi de bu hataya yol açmıyor
+- **boxicons CDN bağımlılığı kaldırıldı:** HTML/CSS/JS sekme ikonları için
+  `unpkg.com` isteği yapılıyordu. Uygulamadaki diğer tüm ikonlar zaten inline
+  SVG olduğu için bu üçü de elle çizildi — `< >`, `#` ve `{}` işaretleri,
+  marka renkleri korunarak
+
+### Eklendi
+
+- `tests/no-cdn.test.ts` — uygulama kabuğunda hiçbir dış adres bulunmadığını,
+  font yollarının göreli olduğunu (`base: './'` olduğu için mutlak yol GitHub
+  Pages'te 404 verirdi), ikonların inline SVG olduğunu ve Türkçe karakter
+  kapsamını doğrulayan 17 test
+
+### Doğrulama
+
+Chrome 131 ve Firefox 157'de uçtan uca: 0 dış istek, fontlar yerelden 200 ile
+geliyor, 700 ağırlığı piksel düzeyinde gerçekten kalın çiziliyor, ikonlar
+20×20 ve üçü de farklı marka renginde.
+
 ## [3.0.2] — Firefox Font Düzeltmesi
 
 Firefox 157 ile uçtan uca doğrulama yapıldı ve butonların yanlış fontla

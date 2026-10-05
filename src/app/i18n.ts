@@ -55,7 +55,7 @@ const STRINGS: Readonly<Record<Lang, Dictionary>> = {
       `"${name}" sandbox içinde çalışmadı; bu bir tarayıcı güvenlik kısıtlamasıdır.`,
     loadErrorTitle: 'Yükleme Hatası',
     loadErrorMsg:
-      'Gerekli editör kütüphaneleri yüklenemedi.<br>Lütfen internet bağlantınızı kontrol edip reklam engelleyicileri (ad-blockers) devre dışı bıraktıktan sonra tekrar deneyin.',
+      'Uygulama başlatılamadı.<br>Tüm dosyalar bu sayfayla birlikte gelir; internet bağlantısı veya reklam engelleyici bu hataya yol açmaz.<br>Lütfen tarayıcı önbelleğini temizleyip sayfayı yenileyin.',
     refreshPage: 'Sayfayı Yenile',
     infoModalTitle: 'Bilgi',
     infoModalP1:
@@ -111,7 +111,7 @@ const STRINGS: Readonly<Record<Lang, Dictionary>> = {
       `"${name}" did not run inside the sandbox due to a browser security restriction.`,
     loadErrorTitle: 'Loading Error',
     loadErrorMsg:
-      'Failed to load required editor libraries.<br>Please check your internet connection, disable ad-blockers, and try again.',
+      'The application could not start.<br>Every file ships with this page; an internet connection or an ad-blocker cannot cause this error.<br>Please clear your browser cache and reload.',
     refreshPage: 'Refresh Page',
     infoModalTitle: 'About',
     infoModalP1:

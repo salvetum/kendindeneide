@@ -9,6 +9,13 @@ coverage/
 
 # Vite
 .vite/
+preview.log
+
+# Playwright / tarayıcı testleri
+test-results/
+playwright-report/
+blob-report/
+.playwright/
 
 # Editör / OS
 .DS_Store

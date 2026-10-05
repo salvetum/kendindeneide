@@ -4,6 +4,51 @@
 @import 'codemirror/theme/eclipse.css';
 
 /* ------------------------------------------------------------------ */
+/* JetBrains Mono — self-hosted                                         */
+/*                                                                     */
+/* Google Fonts CDN'inden çekiliyordu. Reklam engelleyiciler, offline  */
+/* çalışma ve her 3. parti istek kullanıcının kontrolünde olmayan bir   */
+/* dış bağımlılık yaratıyordu; uygulama çevrimdışı da tam çalışsın     */
+/* diye woff2 dosyaları src/assets/fonts/ altına alındı. Vite          */
+/* dosyaları hash'leyip göreli yol üretir; base './' olduğu için       */
+/* GitHub Pages altında da doğru adrese gider.                           */
+/*                                                                     */
+/* Bu bir DEĞİŞKEN font (fvar tablosu var): 400 ve 700 ağırlıkları     */
+/* aynı dosyadan gelir. Bu yüzden @font-face bir ağırlık DEĞERİ        */
+/* değil aralığı ilan eder.                                             */
+/*                                                                     */
+/* unicode-range değerleri Google Fonts'in birebir kendi CSS'idir;     */
+/* tarayıcı gereksiz alt kümeleri indirmez.                            */
+/*                                                                     */
+/* latin-ext ŞARTTIR: ğ ş İ ı gibi Türkçe karakterler latin           */
+/* alt kümesinde değil, latin-ext'te yer alıyor. Sadece latin         */
+/* yüklense kod editöründe bu karakterler başka bir fonta düşerdi.     */
+/* ------------------------------------------------------------------ */
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/fonts/jetbrains-mono-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/fonts/jetbrains-mono-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* ------------------------------------------------------------------ */
 /* Tema değişkenleri                                                   */
 /* ------------------------------------------------------------------ */
 
@@ -224,7 +269,7 @@ textarea {
 }
 
 .button:hover .button-icon,
-.tab-button:hover i {
+.tab-button:hover .tab-icon {
   transform: scale(1.1);
 }
 
@@ -312,8 +357,10 @@ textarea {
   position: relative;
 }
 
-.tab-button i {
-  font-size: 20px;
+.tab-button .tab-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   transition: transform 0.2s;
 }
 

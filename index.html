@@ -9,13 +9,6 @@
       content="Tarayıcıda çalışan ücretsiz online HTML, CSS ve JavaScript kod editörü."
     />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
     <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
@@ -39,8 +32,9 @@
         </div>
         <h3 id="error-title" data-lang-key="loadErrorTitle">Yükleme Hatası</h3>
         <p data-lang-key="loadErrorMsg">
-          Gerekli editör kütüphaneleri yüklenemedi.<br />Lütfen internet bağlantınızı kontrol edip
-          reklam engelleyicileri (ad-blockers) devre dışı bıraktıktan sonra tekrar deneyin.
+          Uygulama başlatılamadı.<br />Tüm dosyalar bu sayfayla birlikte gelir; internet bağlantısı
+          veya reklam engelleyici bu hataya yol açmaz.<br />Lütfen tarayıcı önbelleğini temizleyip
+          sayfayı yenileyin.
         </p>
         <button id="error-refresh-btn" class="button">
           <svg
@@ -261,7 +255,20 @@
               aria-controls="html-pane"
               data-editor="html"
             >
-              <i class="bx bxl-html5" style="color: #e44d26"></i>
+              <svg
+                class="tab-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#e44d26"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <polyline points="8.5 6.5 3 12 8.5 17.5"></polyline>
+                <polyline points="15.5 6.5 21 12 15.5 17.5"></polyline>
+              </svg>
               <span>HTML</span>
             </button>
             <button
@@ -273,7 +280,22 @@
               aria-controls="css-pane"
               data-editor="css"
             >
-              <i class="bx bxl-css3" style="color: #264de4"></i>
+              <svg
+                class="tab-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#264de4"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <line x1="9.5" y1="4" x2="7.5" y2="20"></line>
+                <line x1="16.5" y1="4" x2="14.5" y2="20"></line>
+                <line x1="4" y1="9.5" x2="20" y2="9.5"></line>
+                <line x1="4" y1="14.5" x2="20" y2="14.5"></line>
+              </svg>
               <span>CSS</span>
             </button>
             <button
@@ -285,7 +307,24 @@
               aria-controls="js-pane"
               data-editor="js"
             >
-              <i class="bx bxl-javascript" style="color: #f0db4f"></i>
+              <svg
+                class="tab-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#f0db4f"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M10 3.5H8.5A2.5 2.5 0 0 0 6 6v4.5a2 2 0 0 1-2 2 2 2 0 0 1 2 2V20a2.5 2.5 0 0 0 2.5 2.5H10"
+                ></path>
+                <path
+                  d="M14 3.5h1.5A2.5 2.5 0 0 1 18 6v4.5a2 2 0 0 0 2 2 2 2 0 0 0-2 2V20a2.5 2.5 0 0 1-2.5 2.5H14"
+                ></path>
+              </svg>
               <span>JS</span>
             </button>
           </div>
