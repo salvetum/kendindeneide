@@ -49,18 +49,30 @@ function libraryUrls(keys: readonly LibraryKey[]): {
   return { styleUrls, scriptUrls };
 }
 
-/** Preview'e gönderilecek ve indirilecek tam doküman. */
-export function buildRunnableDocument(options: { includeLibraries?: boolean } = {}): string {
+export interface RunnableOptions {
+  /** Seçili kütüphaneleri (link/script) belgeye ekle. */
+  readonly includeLibraries?: boolean;
+  /**
+   * Blob URL'de göreli yolların çözülebilmesi için `<base href>` ekle.
+   * Yalnızca preview için gerekir; kaydedilen/indirilen metne konmamalıdır.
+   */
+  readonly includeBaseHref?: boolean;
+}
+
+/** Preview'e gönderilecek tam doküman. */
+export function buildRunnableDocument({
+  includeLibraries = true,
+  includeBaseHref = true,
+}: RunnableOptions = {}): string {
   const { htmlCode, cssCode, jsCode } = readSource();
-  const { styleUrls, scriptUrls } =
-    options.includeLibraries === false
-      ? { styleUrls: [], scriptUrls: [] }
-      : libraryUrls(state.libraries);
+  const { styleUrls, scriptUrls } = includeLibraries
+    ? libraryUrls(state.libraries)
+    : { styleUrls: [], scriptUrls: [] };
   return buildPreviewDocument({
     html: htmlCode,
     css: cssCode,
     js: jsCode,
-    baseHref: previewBaseHref(),
+    baseHref: includeBaseHref ? previewBaseHref() : undefined,
     styleUrls,
     scriptUrls,
   });
@@ -69,16 +81,13 @@ export function buildRunnableDocument(options: { includeLibraries?: boolean } = 
 /**
  * "Kodu Sakla" için kalıcı metin.
  *
+ * Kütüphane ve `<base>` eklenmez: bunlar ortam bilgisi taşır ve kullanıcının
+ * kodunu bozar (indirilen dosya kendi başına çalışmalıdır).
+ *
  * Kasıtlı olarak Prettier'dan geçirilmez: kaydetme tuş başına değil, 800 ms
  * debounce sonrasında çalışır ve biçimlendirmek 1 MB'lık Prettier'ı her
- * duraklamada indirmek/yürütmek demektir.
+ * duraklamada indirmek/yürütmek demek.
  */
 export function serializeForStorage(): string {
-  const { htmlCode, cssCode, jsCode } = readSource();
-  return buildPreviewDocument({
-    html: htmlCode,
-    css: cssCode,
-    js: jsCode,
-    baseHref: previewBaseHref(),
-  });
+  return buildRunnableDocument({ includeLibraries: false, includeBaseHref: false });
 }

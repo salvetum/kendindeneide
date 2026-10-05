@@ -8,6 +8,7 @@ import { invalidateSourceCache, parseCombined } from '../core/compose';
 import { parseFullCode } from '../core/document';
 import { createEditor, requireEditor, setActiveSlot } from '../core/editors';
 import { format } from '../core/format';
+import { persistNow } from './persist';
 import { runCode } from './run';
 import { showConfirmation } from '../ui/modal';
 import { showToast } from '../ui/toast';
@@ -91,6 +92,10 @@ export async function applyRevert(): Promise<void> {
   }
 
   runCode(true);
+  // Yazma sırasında change olayları bastırıldığı için kalıcı kopya elle
+  // tazelenir; aksi hâlde geri alma yalnızca ekranda görünür, sayfa
+  // yenilendiğinde eski kod geri gelir.
+  persistNow();
   showToast(t(state.lang, 'toastRevert'), 'info');
 }
 

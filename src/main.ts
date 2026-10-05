@@ -2,6 +2,7 @@ import './styles/main.css';
 
 import { debounce, onIdle } from './app/debounce';
 import { dom } from './app/dom';
+import { markDirty, isDirty, paintTitle } from './app/dirty';
 import { getDefaultCode } from './app/defaultCode';
 import { isLang, t } from './app/i18n';
 import { state } from './app/state';
@@ -10,7 +11,7 @@ import { isLibraryKey } from './app/constants';
 import type { EditorSlot } from './app/state';
 import type { LibraryKey } from './app/types';
 import { formatEditors } from './actions/formatAction';
-import { persistSource } from './actions/persist';
+import { persistNow } from './actions/persist';
 import { combineView, requestRevert, separateView } from './actions/revert';
 import { resetPreview, runCode } from './actions/run';
 import { saveFile } from './actions/saveFile';
@@ -32,23 +33,10 @@ import { initModals, openModal } from './ui/modal';
 import { initResizer } from './ui/resizer';
 import { initSettingsClicks, renderSettings } from './ui/settings';
 import { initTheme, toggleTheme } from './ui/theme';
-import { showToast } from './ui/toast';
 
 /* ------------------------------------------------------------------ */
 /* Kaydedilmemiş değişiklik takibi                                      */
 /* ------------------------------------------------------------------ */
-
-let isDirty = false;
-
-function paintTitle(): void {
-  document.title = `${isDirty ? '● ' : ''}${t(state.lang, 'title')}`;
-}
-
-function markDirty(dirty: boolean): void {
-  isDirty = dirty;
-  document.body.classList.toggle('dirty', dirty);
-  paintTitle();
-}
 
 /* ------------------------------------------------------------------ */
 /* Debounce'lu yan etkiler                                             */
@@ -65,10 +53,7 @@ function scheduleAutoRun(): void {
   autoRunTimer = setTimeout(() => runCode(true), AUTO_RUN_DELAY);
 }
 
-const persistDebounced = debounce(() => {
-  if (persistSource()) markDirty(false);
-  else showToast(t(state.lang, 'toastSaveError'), 'warning');
-}, PERSIST_DELAY);
+const persistDebounced = debounce(persistNow, PERSIST_DELAY);
 
 const lintDebounced = debounce((slot: EditorSlot) => {
   getEditor(slot)?.performLint();
@@ -157,24 +142,29 @@ function bindShortcuts(): void {
 
   window.addEventListener('beforeunload', (event) => {
     // Kayıt açıkken her şey zaten kaydediliyor; uyarı yalnızca kayıt kapalıyken anlamlı.
-    if (!isDirty || state.saveCodeEnabled) return;
+    if (!isDirty() || state.saveCodeEnabled) return;
     event.preventDefault();
     event.returnValue = '';
   });
 }
 
 async function toggleSeparate(): Promise<void> {
-  state.separated = !state.separated;
-
   if (state.separated) {
-    await separateView();
-    dom.combinedView.style.display = 'none';
-    dom.separatedView.style.display = 'flex';
-  } else {
-    await combineView(() => buildRunnableDocument({ includeLibraries: false }));
+    // Kaynak, bayrak çevrilmeden önce ayrık editörlerden okunmalı; aksi hâlde
+    // readSource() bayrağa bakıp bayat birleşik içeriği döndürür ve yapılan
+    // tüm düzenlemeler kaybolur.
+    const combined = buildRunnableDocument({ includeLibraries: false, includeBaseHref: false });
+    state.separated = false;
+    await combineView(() => combined);
     dom.separatedView.style.display = 'none';
     dom.combinedView.style.display = 'flex';
     requireEditor('code').refresh();
+    persistNow();
+  } else {
+    state.separated = true;
+    await separateView();
+    dom.combinedView.style.display = 'none';
+    dom.separatedView.style.display = 'flex';
   }
 
   dom.separateBtnText.textContent = t(state.lang, state.separated ? 'combine' : 'separate');

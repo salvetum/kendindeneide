@@ -19,6 +19,9 @@ export function parseFullCode(fullCode: string): ParsedCode {
   doc.body.querySelectorAll('script:not([src])').forEach((node) => node.remove());
   doc.head.querySelectorAll('link[rel="stylesheet"]').forEach((node) => node.remove());
   doc.body.querySelectorAll('script[src]').forEach((node) => node.remove());
+  // Preview için eklenen <base> kullanıcının koduna ait değil; eski kayıtlardan
+  // temizlenir ki ortam adresi kalıcı metne sızmasın.
+  doc.head.querySelectorAll('base').forEach((node) => node.remove());
 
   return {
     htmlCode: `<!DOCTYPE html>\n${doc.documentElement.outerHTML}`,

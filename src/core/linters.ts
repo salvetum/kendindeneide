@@ -29,7 +29,11 @@ interface CssLintMessage {
 }
 
 interface CssLintApi {
-  verify(css: string, ruleset?: unknown): CssLintMessage[];
+  /**
+   * CSSLint 1.x `verify()` bir dizi değil, `{ messages, stats, ... }` biçiminde
+   * bir rapor nesnesi döndürür.
+   */
+  verify(css: string, ruleset?: unknown): { readonly messages: CssLintMessage[] };
 }
 
 interface HtmlHintMessage {
@@ -39,16 +43,25 @@ interface HtmlHintMessage {
   rule?: { id?: string; severity?: string };
 }
 
-interface HtmlHintApi {
+interface HtmlHintCore {
   defaultRuleset: unknown;
   verify(html: string, ruleset?: unknown): HtmlHintMessage[];
+}
+
+/**
+ * htmlhint/dist/htmlhint.js UMD bundle'ı globali
+ * `{ HTMLHint: <çekirdek örnek> }` biçiminde dışa aktarıyor; `verify` metodu
+ * doğrudan globalin üzerinde değil, `.HTMLHint` özelliğindedir.
+ */
+interface HtmlHintBundle {
+  HTMLHint?: HtmlHintCore;
 }
 
 declare global {
   interface Window {
     JSHINT?: JshintApi;
     CSSLint?: CssLintApi;
-    HTMLHint?: HtmlHintApi;
+    HTMLHint?: HtmlHintBundle;
   }
 }
 
@@ -107,7 +120,7 @@ export function ensureLinters(): Promise<void> {
 }
 
 export function areLintersReady(): boolean {
-  return Boolean(window.JSHINT && window.CSSLint && window.HTMLHint);
+  return Boolean(window.JSHINT && window.CSSLint && window.HTMLHint?.HTMLHint);
 }
 
 /* ------------------------------------------------------------------ */
@@ -117,12 +130,17 @@ export function areLintersReady(): boolean {
 export function mapJshintErrors(errors: readonly (JshintError | null)[]): Annotation[] {
   return errors
     .filter((error): error is JshintError => error !== null)
-    .map((error) => ({
-      message: error.reason,
-      severity: error.code ? 'warning' : 'error',
-      from: Pos(error.line - 1, error.character),
-      to: Pos(error.line - 1, error.character + 1),
-    }));
+    .map((error) => {
+      // JSHint satır ve sütun numaralarını 1 tabanlı bildirir.
+      const line = Math.max(0, error.line - 1);
+      const ch = Math.max(0, error.character - 1);
+      return {
+        message: error.reason,
+        severity: error.code ? 'warning' : 'error',
+        from: Pos(line, ch),
+        to: Pos(line, ch + 1),
+      };
+    });
 }
 
 export function mapCssLintMessages(messages: readonly CssLintMessage[]): Annotation[] {
@@ -166,16 +184,18 @@ export function lintOptionFor(mode: EditorMode): false | SyncLintStateOptions<un
   }
 
   if (mode === 'css' && window.CSSLint) {
+    const csslint = window.CSSLint;
     return {
       async: false,
-      getAnnotations: (code) => mapCssLintMessages(window.CSSLint!.verify(code)),
+      getAnnotations: (code) => mapCssLintMessages(csslint.verify(code).messages),
     };
   }
 
-  if ((mode === 'htmlmixed' || mode === 'text/html') && window.HTMLHint) {
+  const htmlHint = window.HTMLHint?.HTMLHint;
+  if ((mode === 'htmlmixed' || mode === 'text/html') && htmlHint) {
     return {
       async: false,
-      getAnnotations: (code) => mapHtmlHintMessages(window.HTMLHint!.verify(code)),
+      getAnnotations: (code) => mapHtmlHintMessages(htmlHint.verify(code)),
     };
   }
 
@@ -189,5 +209,14 @@ export function modeSupportsLint(mode: EditorMode): boolean {
 export function applyLint(editor: Editor, mode: EditorMode): void {
   const option = lintOptionFor(mode);
   editor.setOption('lint', modeSupportsLint(mode) ? option : false);
-  if (option !== false) editor.performLint();
+  if (option === false) return;
+
+  // Linter kendi içinde hata verirse (beklenmeyen API, bozuk sürüm) istisna
+  // yayılmaz: aksi hâlde applyLintToAll yarıda kesilir ve sonraki
+  // editörler hiç lint almaz.
+  try {
+    editor.performLint();
+  } catch (error) {
+    console.error(`${mode} lint çalıştırılamadı:`, error);
+  }
 }

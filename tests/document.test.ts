@@ -60,6 +60,25 @@ describe('parseFullCode', () => {
     // Ayrıştırılan HTML'de script bloğu kalmamalı; enjekte edilen içerik çıkarıldı.
     expect(htmlCode).not.toContain('<b>merhaba</b>');
   });
+
+  it('preview için eklenen <base> etiketini kullanıcı kodundan temizler', () => {
+    // Base yalnızca Blob URL çalışma ortamı içindir; kalıcı metne sızmamalı.
+    const { htmlCode } = parseFullCode(
+      '<head><base href="https://ornek.site/uygulama/"><title>T</title></head><body><p>x</p></body>',
+    );
+
+    expect(htmlCode).not.toContain('<base');
+    expect(htmlCode).not.toContain('ornek.site');
+    expect(htmlCode).toContain('<title>T</title>');
+  });
+
+  it('birden fazla <base> etiketini de temizler', () => {
+    const { htmlCode } = parseFullCode(
+      '<head><base href="https://a.example/"><base href="https://b.example/"></head><body></body>',
+    );
+
+    expect(htmlCode).not.toContain('<base');
+  });
 });
 
 describe('buildPreviewDocument', () => {

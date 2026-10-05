@@ -47,6 +47,10 @@ export function createEditor(slot: EditorSlot): Editor {
   const editor = CodeMirror.fromTextArea(dom.textareas[slot], baseOptions(slot));
   instances[slot] = editor;
 
+  // Linterlar geç yüklendiği için yeni editör oluşturulurken hazır olmayabilir;
+  // hazırsa hemen bağlanır (applyLint hazır değilse lint'i false bırakır).
+  applyLint(editor, EDITOR_MODES[slot]);
+
   editor.on('change', () => onChange(slot, editor));
 
   return editor;
@@ -64,10 +68,6 @@ export function requireEditor(slot: EditorSlot): Editor {
 
 export function allEditors(): Editor[] {
   return Object.values(instances).filter((editor): editor is Editor => editor !== undefined);
-}
-
-export function activeEditor(): Editor {
-  return state.separated ? requireEditor(state.activeSlot) : requireEditor('code');
 }
 
 export function refreshAll(): void {
@@ -106,8 +106,4 @@ export function setActiveSlot(slot: EditorSlot): void {
       editor.performLint();
     }, 1);
   }
-}
-
-export function markDirty(dirty: boolean): void {
-  document.body.classList.toggle('dirty', dirty);
 }

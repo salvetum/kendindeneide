@@ -7,12 +7,12 @@ import { showToast } from '../ui/toast';
 export const DOWNLOAD_FILENAME = 'index.html';
 
 /**
- * Kaydetme (indirme). Kullanıcının seçtiği kütüphaneler dahil edilir ve
- * çıktı Prettier'dan geçirilir; biçimlendirme başarısız olursa ham çıktı
- * indirilir.
+ * Kaydetme (indirme). Kullanıcının seçtiği kütüphaneler dahil edilir,
+ * `<base>` eklenmez (indirilen dosya kendi başına çalışmalıdır) ve çıktı
+ * Prettier'dan geçirilir; biçimlendirme başarısız olursa ham çıktı indirilir.
  */
 export async function saveFile(): Promise<void> {
-  const source = buildRunnableDocument();
+  const source = buildRunnableDocument({ includeBaseHref: false });
   let output = source;
   try {
     output = await format(source, 'html');

@@ -3,6 +3,42 @@
 Bu projedeki tüm önemli değişiklikler bu dosyada belgelenir.
 Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek hazırlanmıştır.
 
+## [3.0.1] — Tarayıcıda Doğrulanan Düzeltmeler
+
+Bu tur, uygulama gerçek bir tarayıcıda (Chrome, otomatik uçtan uca senaryolar)
+çalıştırılarak yeniden gözden geçirildi ve bulunan hatalar giderildi.
+
+### Düzeltildi
+
+- **"Birleştir" tüm düzenlemeleri siliyordu:** görünüm bayrağı `readSource()`
+  okunmadan önce çevrildiği için kaynak bayat birleşik içerikten geliyordu;
+  ayrık görünümde yapılan her değişiklik geri alınıyordu
+- **`<base href>` kalıcı metne sızıyordu:** preview için eklenen taban adresi
+  hem "Kodu Sakla" deposuna hem de indirilen `index.html` dosyasına yazılıyor,
+  her kayıtta biriktiriyordu. Artık yalnızca preview dokümanına ekleniyor ve
+  ayrıştırma sırasında temizleniyor
+- **HTMLHint hiç çalışmıyordu:** UMD paketi globali `{ HTMLHint: <örnek> }`
+  biçiminde dışa aktarıyor, `verify` doğrudan globalin üzerinde değil
+- **CSSLint uyarı üretmiyordu:** `verify()` bir dizi değil
+  `{ messages, ... }` rapor nesnesi döndürüyor
+- **Lint yalnızca açılışta etkinleşiyordu:** ayrık görünüme geçince oluşturulan
+  HTML/CSS/JS editörleri hiç lint almıyordu; artık her editör oluşturulurken
+  bağlanıyor
+- **Bir linter çöktüğünde tüm lint duruyordu:** hata artık editör bazında
+  yutuluyor
+- **"Geri Al" kalıcı değildi:** programatik yazmalarda `change` olayları
+  bastırıldığı için geri alma yalnızca ekranda görünüyordu; sayfa yenilenince
+  eski kod geri geliyordu
+- JSHint sütun konumları bir karakter kaydıydı
+
+### Eklendi
+
+- Linter eşleyicileri (JSHint / CSSLint / HTMLHint) için birim testleri
+- `<base>` sızıntısına karşı ayrıştırma regresyon testleri
+- Uçtan uca tarayıcı senaryoları: preview render, `</script>` kaçışı,
+  ayır/birleştir kalıcılığı, lint işaretleri, otomatik kayıt + yenileme,
+  indirilen dosya, tema, modal, geri alma, kütüphane yükleme
+
 ## [3.0.0] — Vite + TypeScript Altyapısı
 
 ### Eklendi
