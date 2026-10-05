@@ -3,6 +3,30 @@
 Bu projedeki tüm önemli değişiklikler bu dosyada belgelenir.
 Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek hazırlanmıştır.
 
+## [3.0.2] — Firefox Font Düzeltmesi
+
+Firefox 157 ile uçtan uca doğrulama yapıldı ve butonların yanlış fontla
+çizildiği görüldü.
+
+### Düzeltildi
+
+- **Butonlar Firefox'ta yanlış fontla çiziliyordu:** tarayıcılar form
+  kontrollerine `font-family` **miras almaz**. Chrome'un kullanıcı tarayıcı
+  stil sayfası varsayılanı `Arial` (Segoe UI'ye yakın olduğu için fark
+  edilmiyor), Firefox'unki ise `MS Shell Dlg \32 ` — Windows 3.1'in bayt
+  yazı tipiyle gelen MS Sans Serif. Uygulamadaki bütün butonlar, sekme
+  etiketleri ve ayar paneli anahtarları bu yüzden gövde fontunu kullanamıyordu.
+  Artık `button, input, select, textarea` `font-family: inherit` alıyor
+- **Google Fonts'a var olmayan aile isteniyordu:** `Segoe UI` Microsoft'un
+  sistem fontudur, Google Fonts'ta yok; istek sessizce yoksayılıyordu.
+  Adres satırından çıkarıldı
+
+### Eklendi
+
+- `tests/styles.test.ts` — form kontrolleri ve font değişkenleri için
+  regresyon testleri (jsdom tarayıcı varsayılan fontunu yansıtmadığı için
+  bu hata yalnızca gerçek tarayıcıda görülebiliyordu)
+
 ## [3.0.1] — Tarayıcıda Doğrulanan Düzeltmeler
 
 Bu tur, uygulama gerçek bir tarayıcıda (Chrome, otomatik uçtan uca senaryolar)
