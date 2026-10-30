@@ -26,11 +26,13 @@ import { saveFile } from './actions/saveFile';
 import { shareCurrentCode } from './actions/shareAction';
 import { handleChoice, handleToggle } from './actions/settingsAction';
 import { buildRunnableDocument } from './core/compose';
+import { expandAbbreviation } from './core/emmet';
 import { applyFontSize } from './core/editorOptions';
 import { isFontSize, isTabSize } from './core/editorPrefs';
 import {
   applyLintToAll,
   applyThemeToEditors,
+  activeEditor,
   createEditor,
   getEditor,
   requireEditor,
@@ -121,6 +123,10 @@ function bindHeaderActions(): void {
       case 'share-btn':
         void shareCurrentCode();
         break;
+      case 'emmet-btn':
+        void expandAbbreviation(activeEditor() ?? requireEditor('code'));
+        showToast(t(state.lang, 'emmetExpanded'), 'info');
+        break;
       case 'settings-btn':
         openModal(dom.settingsModal);
         break;
@@ -183,6 +189,10 @@ function bindShortcuts(): void {
     } else if (key === 'h') {
       event.preventDefault();
       openFindbar({ focusReplace: true });
+    } else if (key === 'e') {
+      event.preventDefault();
+      void expandAbbreviation(activeEditor() ?? requireEditor('code'));
+      showToast(t(state.lang, 'emmetExpanded'), 'info');
     }
   });
 

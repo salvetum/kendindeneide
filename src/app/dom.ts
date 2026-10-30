@@ -24,6 +24,7 @@ const $ = {
   editorTabs: must<HTMLElement>('.editor-tabs'),
   findbar: must<HTMLElement>('#findbar'),
   shareBtn: must<HTMLButtonElement>('#share-btn'),
+  emmetBtn: must<HTMLButtonElement>('#emmet-btn'),
   findInput: must<HTMLInputElement>('#find-input'),
   findCount: must<HTMLElement>('#find-count'),
   findPrev: must<HTMLButtonElement>('#find-prev'),

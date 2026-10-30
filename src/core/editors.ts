@@ -20,6 +20,7 @@ import { EDITOR_MODES, state } from '../app/state';
 import type { EditorSlot } from '../app/state';
 import { editorPrefs } from './editorPrefs';
 import { applyLint } from './linters';
+import { attachEmmetKeymap } from './emmet';
 import { currentCodeMirrorTheme } from '../ui/theme';
 
 const instances: Partial<Record<EditorSlot, Editor>> = {};
@@ -69,6 +70,9 @@ export function createEditor(slot: EditorSlot): Editor {
 
   const editor = CodeMirror.fromTextArea(dom.textareas[slot], baseOptions(slot));
   instances[slot] = editor;
+
+  // Emmet Tab kısayolu (lazy yüklenen emmet paketi ile)
+  attachEmmetKeymap(editor);
 
   // Linterlar geç yüklendiği için yeni editör oluşturulurken hazır olmayabilir;
   // hazırsa hemen bağlanır (applyLint hazır değilse lint'i false bırakır).
