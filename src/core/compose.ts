@@ -87,15 +87,15 @@ export function buildRunnableDocument({
 }
 
 /**
- * "Kodu Sakla" için kalıcı metin.
+ * "Otomatik Kayıt" için kalıcı metin.
  *
  * Kütüphane, `<base>` ve hata köprüsü eklenmez: bunlar ortam bilgisi taşır veya
  * yalnızca çalıştırılan önizlemeye aittir; indirilen dosya kendi başına
  * çalışmalıdır.
  *
- * Kasıtlı olarak Prettier'dan geçirilmez: kaydetme tuş başına değil, 800 ms
- * debounce sonrasında çalışır ve biçimlendirmek 1 MB'lık Prettier'ı her
- * duraklamada indirmek/yürütmek demek.
+ * Kasıtlı olarak Prettier'dan geçirilmez: her kod değişikliğinde değil,
+ * 2 saniyelik duraklamada (debounce) çalışır ve biçimlendirmek 1 MB'lık
+ * Prettier'ı her duraklamada indirmek/yürütmek demek.
  */
 export function serializeForStorage(): string {
   return buildRunnableDocument({ includeLibraries: false, includeBaseHref: false });

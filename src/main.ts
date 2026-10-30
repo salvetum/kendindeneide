@@ -58,7 +58,7 @@ import { initTheme, toggleTheme } from './ui/theme';
 /* ------------------------------------------------------------------ */
 
 const AUTO_RUN_DELAY = 500;
-const PERSIST_DELAY = 800;
+const PERSIST_DELAY = 2000;
 const LINT_DELAY = 300;
 
 let autoRunTimer: ReturnType<typeof setTimeout> | undefined;

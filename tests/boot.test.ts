@@ -90,7 +90,7 @@ describe('uygulama açılışı', () => {
       (item) => item.textContent,
     );
 
-    expect(labels).toContain('Kodu Sakla');
+    expect(labels).toContain('Otomatik Kayıt');
     expect(labels).toContain('Oto-Çalıştır');
     expect(labels).toContain('jQuery');
   });

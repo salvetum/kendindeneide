@@ -24,6 +24,10 @@ export function persistSource(): boolean {
  */
 export function persistNow(): void {
   if (!state.saveCodeEnabled) return;
-  if (persistSource()) markDirty(false);
-  else showToast(t(state.lang, 'toastSaveError'), 'warning');
+  if (persistSource()) {
+    markDirty(false);
+    showToast(t(state.lang, 'toastAutoSave'), 'info');
+  } else {
+    showToast(t(state.lang, 'toastSaveError'), 'warning');
+  }
 }
