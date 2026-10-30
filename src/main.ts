@@ -83,6 +83,7 @@ function onEditorChange(slot: EditorSlot): void {
   if (state.saveCodeEnabled) persistDebounced();
   if (state.autoRunEnabled) scheduleAutoRun();
   lintDebounced(slot);
+  updateStatusBar();
 }
 
 /* ------------------------------------------------------------------ */
@@ -237,6 +238,35 @@ function applyPreviewDevice(): void {
 
   // Kalıcılaştır (debounce yok; anlık seçimin kaydedilmesi daha iyi UX).
   void setString(STORAGE_KEYS.previewDevice, device);
+
+  // Status bar cihaz göstergesini güncelle.
+  const deviceLabels: Record<string, string> = {
+    desktop: t(state.lang, 'previewDesktop'),
+    tablet: t(state.lang, 'previewTablet'),
+    mobile: t(state.lang, 'previewMobile'),
+  };
+  dom.statusDeviceValue.textContent = deviceLabels[device] ?? device;
+}
+
+function updateStatusBar(): void {
+  const editor = activeEditor();
+  if (!editor) return;
+
+  const code = editor.getValue();
+  const lines = code.split('\n').length;
+  const chars = code.length;
+  const bytes = new Blob([code]).size;
+
+  dom.statusLinesValue.textContent = String(lines);
+  dom.statusCharsValue.textContent = String(chars);
+  dom.statusSizeValue.textContent = formatBytes(bytes);
+  dom.statusLangValue.textContent = state.lang.toUpperCase();
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -328,6 +358,7 @@ function boot(): void {
   bindShortcuts();
 
   applyPreviewDevice();
+  updateStatusBar();
 
   void applySharedCode();
   runCode(true);
