@@ -24,7 +24,7 @@ export function currentCodeMirrorTheme(): string {
   return CODE_MIRROR_THEME[resolvedTheme()];
 }
 
-function apply(theme: 'dark' | 'light'): void {
+export function applyTheme(theme: 'dark' | 'light'): void {
   document.documentElement.setAttribute('data-theme', theme);
   // Tema düğmesi: mevcut temanın tersini göster (bir sonrakine geçiş ipucu).
   if (state.theme === 'system') {
@@ -38,22 +38,23 @@ function apply(theme: 'dark' | 'light'): void {
 
 export function initTheme(): void {
   const saved = getString(STORAGE_KEYS.theme);
+  // Kaydedilmiş tercih yoksa sistem temasını kullan.
   const theme: Theme = saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'dark';
   state.theme = theme;
-  apply(resolvedTheme());
+  applyTheme(resolvedTheme());
 
   // Sistem tema değişikliğini dinle (test ortamında matchMedia olmayabilir).
   if (typeof window.matchMedia === 'function') {
     window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
-      if (state.theme === 'system') apply(resolvedTheme());
+      if (state.theme === 'system') applyTheme(resolvedTheme());
     });
   }
 }
 
 export function toggleTheme(): void {
-  const order: Theme[] = ['dark', 'light', 'system'];
-  const idx = order.indexOf(state.theme);
-  state.theme = order[(idx + 1) % order.length] ?? 'dark';
+  // Tema düğmesi: koyu ↔ açık arasında geçiş yapar.
+  // 'system' seçeneği ayarlar panelinden seçilebilir.
+  state.theme = state.theme === 'dark' ? 'light' : 'dark';
   setString(STORAGE_KEYS.theme, state.theme);
-  apply(resolvedTheme());
+  applyTheme(resolvedTheme());
 }

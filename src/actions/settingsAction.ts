@@ -1,12 +1,15 @@
-import { isLibraryKey } from '../app/constants';
+import { ICONS, isLibraryKey } from '../app/constants';
+import { dom } from '../app/dom';
 import { isLang, t } from '../app/i18n';
 import { state } from '../app/state';
 import { STORAGE_KEYS, setBoolean, setJson, setString } from '../app/storage';
 import type { ChoiceSettingKey, Lang, SettingKey } from '../app/types';
 import { applyFontSize, applyTabSize, applyWordWrap } from '../core/editorOptions';
+import { applyThemeToEditors } from '../core/editors';
 import { isFontSize, isTabSize } from '../core/editorPrefs';
 import { renderDiagnostics } from '../ui/diagnostics';
 import { applyLanguage } from '../ui/language';
+import { applyTheme, resolvedTheme } from '../ui/theme';
 import { renderSettings } from '../ui/settings';
 import { showToast } from '../ui/toast';
 import { clearSavedCode } from './revert';
@@ -35,6 +38,18 @@ export function handleChoice(key: ChoiceSettingKey, value: string): void {
     state.editorTabSize = value;
     setString(STORAGE_KEYS.editorTabSize, value);
     applyTabSize(value);
+    return;
+  }
+
+  if (key === 'theme') {
+    if (value !== 'dark' && value !== 'light' && value !== 'system') return;
+    state.theme = value;
+    setString(STORAGE_KEYS.theme, value);
+    applyTheme(resolvedTheme());
+    applyThemeToEditors();
+    dom.themeBtn.innerHTML =
+      value === 'system' ? ICONS.system : value === 'dark' ? ICONS.light : ICONS.dark;
+    return;
   }
 }
 

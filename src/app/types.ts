@@ -25,7 +25,7 @@ export type SettingKey =
   | EditorTabSize;
 
 /** Açılır listeden seçilen ayarlar. */
-export type ChoiceSettingKey = 'editorFontSize' | 'editorTabSize';
+export type ChoiceSettingKey = 'editorFontSize' | 'editorTabSize' | 'theme';
 
 /** Açık/kapa düğmesi olan ayarlar. */
 export type ToggleSettingKey = Extract<

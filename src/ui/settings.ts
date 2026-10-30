@@ -95,6 +95,16 @@ export function renderSettings(options: SettingsOptions): void {
   );
   grid.appendChild(divider());
 
+  grid.appendChild(section(t(lang, 'themeMode')));
+  grid.appendChild(
+    selectField(t(lang, 'themeMode'), 'theme', state.theme, [
+      ['dark', t(lang, 'themeDark')],
+      ['light', t(lang, 'themeLight')],
+      ['system', t(lang, 'themeSystem')],
+    ]),
+  );
+  grid.appendChild(divider());
+
   grid.appendChild(section(t(lang, 'appSettings')));
   grid.appendChild(chip(t(lang, 'saveCode'), 'saveCodeEnabled', state.saveCodeEnabled, 'app'));
   grid.appendChild(chip(t(lang, 'autoRun'), 'autoRunEnabled', state.autoRunEnabled, 'app'));
