@@ -8,6 +8,9 @@ export type PrettierParser = 'html' | 'css' | 'babel';
 /** Kod editörü yazı tipi boyutu. */
 export type EditorFontSize = 'small' | 'medium' | 'large';
 
+/** Önizleme cihaz boyutu. */
+export type PreviewDevice = 'desktop' | 'tablet' | 'mobile';
+
 /** Sekme (indent) genişliği. */
 export type EditorTabSize = '2' | '4';
 

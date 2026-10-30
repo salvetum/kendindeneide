@@ -13,10 +13,11 @@ import {
   getString,
   isStringArray,
   setJson,
+  setString,
 } from './app/storage';
 import { isLibraryKey } from './app/constants';
 import type { EditorSlot } from './app/state';
-import type { LibraryKey } from './app/types';
+import type { LibraryKey, PreviewDevice } from './app/types';
 import { formatEditors } from './actions/formatAction';
 import { persistNow } from './actions/persist';
 import { combineView, requestRevert, separateView } from './actions/revert';
@@ -110,6 +111,13 @@ function bindHeaderActions(): void {
       case 'clear-btn':
         resetPreview();
         break;
+      case 'preview-desktop':
+      case 'preview-tablet':
+      case 'preview-mobile':
+        state.previewDevice = button.dataset.device as PreviewDevice;
+        applyPreviewDevice();
+        showToast(t(state.lang, 'previewDevice'), 'info');
+        break;
       case 'share-btn':
         void shareCurrentCode();
         break;
@@ -201,6 +209,19 @@ async function toggleSeparate(): Promise<void> {
   dom.separateBtnText.textContent = t(state.lang, state.separated ? 'combine' : 'separate');
 }
 
+function applyPreviewDevice(): void {
+  const device = state.previewDevice;
+  dom.previewDevice.className = `preview-device ${device}`;
+
+  // Tüm düğmelerden active kaldır, seçileni işaretle.
+  [dom.previewDesktopBtn, dom.previewTabletBtn, dom.previewMobileBtn].forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.device === device);
+  });
+
+  // Kalıcılaştır (debounce yok; anlık seçimin kaydedilmesi daha iyi UX).
+  void setString(STORAGE_KEYS.previewDevice, device);
+}
+
 /* ------------------------------------------------------------------ */
 /* Başlatma                                                            */
 /* ------------------------------------------------------------------ */
@@ -221,6 +242,13 @@ function restoreState(): void {
   const savedTabSize = getString(STORAGE_KEYS.editorTabSize);
   state.editorTabSize = isTabSize(savedTabSize) ? savedTabSize : '4';
   state.editorWordWrap = getBoolean(STORAGE_KEYS.editorWordWrap, true);
+
+  const savedDevice = getString(STORAGE_KEYS.previewDevice);
+  state.previewDevice =
+    savedDevice !== null &&
+    (savedDevice === 'desktop' || savedDevice === 'tablet' || savedDevice === 'mobile')
+      ? savedDevice
+      : 'desktop';
 }
 
 function initCombinedEditor(): void {
@@ -281,6 +309,8 @@ function boot(): void {
 
   bindHeaderActions();
   bindShortcuts();
+
+  applyPreviewDevice();
 
   void applySharedCode();
   runCode(true);

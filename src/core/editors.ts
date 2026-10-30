@@ -44,7 +44,7 @@ function baseOptions(slot: EditorSlot): EditorConfiguration {
     autoCloseBrackets: true,
     highlightSelectionMatches: { showToken: /\w/u, annotateScrollbar: true },
     gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
-foldGutter: {
+    foldGutter: {
       rangeFinder: CodeMirror.fold.combine(
         CodeMirror.fold.brace,
         CodeMirror.fold.indent,
@@ -55,7 +55,7 @@ foldGutter: {
     lint: false,
     ...editorPrefs({ tabSize: state.editorTabSize, wordWrap: state.editorWordWrap }),
   };
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   return opts as EditorConfiguration;
 }
 

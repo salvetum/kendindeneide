@@ -517,7 +517,9 @@ textarea {
   line-height: 14px;
   font-size: 10px;
   font-weight: 700;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
 }
 
 .CodeMirror-foldgutter-open:hover,
@@ -559,6 +561,95 @@ textarea {
   flex-grow: 1;
   /* Konsol paneli açıldığında iframe'in küçülmesini engeller. */
   min-height: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive önizleme cihaz çerçevesi                                 */
+/* ------------------------------------------------------------------ */
+
+.preview-device-controls {
+  display: flex;
+  gap: 4px;
+  margin-left: 16px;
+  border-left: 1px solid var(--glass-border);
+  padding-left: 12px;
+}
+
+.preview-device-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.preview-device-btn:hover:not(.active) {
+  background-color: var(--button-hover-bg);
+}
+
+.preview-device-btn.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+}
+
+.preview-device-btn.active:hover {
+  background-color: var(--accent-hover);
+}
+
+.preview-device-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.preview-device {
+  position: relative;
+  background: #000;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  border: 8px solid #222;
+}
+
+.preview-device.desktop {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+.preview-device.tablet {
+  width: 768px;
+  height: 1024px;
+}
+
+.preview-device.mobile {
+  width: 375px;
+  height: 667px;
+}
+
+.preview-device iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background-color: var(--result-bg);
 }
 
 /* ------------------------------------------------------------------ */

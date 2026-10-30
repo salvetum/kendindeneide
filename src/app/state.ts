@@ -1,4 +1,12 @@
-import type { EditorFontSize, EditorMode, EditorTabSize, Lang, LibraryKey, Theme } from './types';
+import type {
+  EditorFontSize,
+  EditorMode,
+  EditorTabSize,
+  Lang,
+  LibraryKey,
+  PreviewDevice,
+  Theme,
+} from './types';
 
 export type EditorSlot = 'code' | 'html' | 'css' | 'js';
 
@@ -26,6 +34,8 @@ export const state = {
   editorFontSize: 'medium' as EditorFontSize,
   editorTabSize: '4' as EditorTabSize,
   editorWordWrap: true,
+  /** Önizleme cihaz boyutu. */
+  previewDevice: 'desktop' as PreviewDevice,
   libraries: [] as LibraryKey[],
   /** Programatik setValue sırasında change kaynaklı yan etkileri bastır. */
   suppressEffects: false,

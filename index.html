@@ -476,6 +476,38 @@
             <line x1="8" y1="21" x2="8" y2="9"></line>
           </svg>
           <span data-lang-key="result">Sonuç</span>
+          <div class="preview-device-controls" role="group" aria-label="Önizleme cihaz boyutu">
+            <button
+              type="button"
+              class="preview-device-btn active"
+              id="preview-desktop"
+              data-device="desktop"
+              data-lang-title="previewDeviceTooltip"
+              aria-label="Masaüstü"
+            >
+              <span data-lang-key="previewDesktop">Masaüstü</span>
+            </button>
+            <button
+              type="button"
+              class="preview-device-btn"
+              id="preview-tablet"
+              data-device="tablet"
+              data-lang-title="previewDeviceTooltip"
+              aria-label="Tablet"
+            >
+              <span data-lang-key="previewTablet">Tablet</span>
+            </button>
+            <button
+              type="button"
+              class="preview-device-btn"
+              id="preview-mobile"
+              data-device="mobile"
+              data-lang-title="previewDeviceTooltip"
+              aria-label="Mobil"
+            >
+              <span data-lang-key="previewMobile">Mobil</span>
+            </button>
+          </div>
         </div>
         <!--
           allow-same-origin: WebKit (Safari) yalnızca opaque origin'li belgelerde
@@ -485,12 +517,16 @@
           içerdiği için düşmanlı kod yalıtımı değil, kazara bozmayı önleme
           amaçlıdır; uygulamanın sakladığı tek şey kullanıcının kendi kodudur.
         -->
-        <iframe
-          id="result-frame"
-          class="result-frame"
-          title="Sonuç önizlemesi"
-          sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox"
-        ></iframe>
+        <div class="preview-device-wrapper">
+          <div class="preview-device desktop" id="preview-device">
+            <iframe
+              id="result-frame"
+              class="result-frame"
+              title="Sonuç önizlemesi"
+              sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox"
+            ></iframe>
+          </div>
+        </div>
 
         <section id="diagnostics" class="diagnostics" hidden>
           <div class="diagnostics-bar">
