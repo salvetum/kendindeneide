@@ -81,7 +81,6 @@ export const JSHINT_OPTIONS = {
     clearInterval: true,
     localStorage: true,
     jQuery: false,
-    bootstrap: false,
     React: false,
     ReactDOM: false,
     Vue: false,
