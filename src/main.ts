@@ -154,6 +154,13 @@ function bindShortcuts(): void {
       return;
     }
 
+    // Klavye kısayolu paneli (? tuşu) — ctrl/meta gerektirmez.
+    if (event.key === '?') {
+      event.preventDefault();
+      openModal(dom.shortcutModal);
+      return;
+    }
+
     if (!event.ctrlKey && !event.metaKey) return;
     const key = event.key.toLowerCase();
 

@@ -654,5 +654,69 @@
         </div>
       </div>
     </div>
+    <!-- Klavye kısayolu paneli (? tuşu ile açılır, Escape ile kapanır) -->
+    <div
+      id="shortcut-modal"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="shortcut-title"
+    >
+      <div class="modal-content shortcut-modal">
+        <h3 id="shortcut-title" data-lang-key="shortcutsTitle">Klavye Kısayolları</h3>
+        <table class="shortcut-list">
+          <thead>
+            <tr>
+              <th scope="col" data-lang-key="shortcut">Kısayol</th>
+              <th scope="col" data-lang-key="shortcutDesc">İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><kbd>Ctrl</kbd> + <kbd>R</kbd></td>
+              <td data-lang-key="shortcutRun">Çalıştır (Ctrl+R)</td>
+            </tr>
+            <tr>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></td>
+              <td data-lang-key="shortcutFormat">Biçimlendir (Ctrl+Shift+F)</td>
+            </tr>
+            <tr>
+              <td><kbd>Ctrl</kbd> + <kbd>S</kbd></td>
+              <td data-lang-key="shortcutSave">Kaydet (Ctrl+S)</td>
+            </tr>
+            <tr>
+              <td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd></td>
+              <td data-lang-key="shortcutRevert">Değişiklikleri Geri Al (Ctrl+Alt+R)</td>
+            </tr>
+            <tr>
+              <td><kbd>Ctrl</kbd> + <kbd>F</kbd></td>
+              <td data-lang-key="shortcutFind">Ara (Ctrl+F)</td>
+            </tr>
+            <tr>
+              <td><kbd>Ctrl</kbd> + <kbd>H</kbd></td>
+              <td data-lang-key="shortcutReplace">Değiştir (Ctrl+H)</td>
+            </tr>
+            <tr>
+              <td><kbd>?</kbd></td>
+              <td data-lang-key="shortcutShortcuts">Kısayol Paneli (? Tuşu)</td>
+            </tr>
+            <tr>
+              <td><kbd>Escape</kbd></td>
+              <td data-lang-key="shortcutClose">Kapat (Escape)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="modal-buttons">
+          <button
+            id="shortcut-close-btn"
+            type="button"
+            class="button modal-close-btn"
+            data-lang-key="shortcutClose"
+          >
+            Kapat (Escape)
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -1056,7 +1056,56 @@ textarea {
 }
 
 /* ------------------------------------------------------------------ */
-/* Ayarlar                                                             */
+/* ------------------------------------------------------------------ */
+/* Klavye kısayolu paneli                                               */
+/* ------------------------------------------------------------------ */
+
+.shortcut-modal {
+  max-width: 560px;
+}
+
+.shortcut-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 0;
+  font-size: 14px;
+}
+
+.shortcut-list th,
+.shortcut-list td {
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shortcut-list th {
+  color: var(--accent-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.shortcut-list kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--accent-color);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-right: 6px;
+}
+
+.shortcut-list tr:last-child td {
+  border-bottom: none;
+}
+
+/* Ayarlar                                                            */
 /* ------------------------------------------------------------------ */
 
 .settings-grid {

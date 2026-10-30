@@ -35,6 +35,7 @@ const $ = {
   confirmModal: must<HTMLElement>('#confirm-modal'),
   settingsModal: must<HTMLElement>('#settings-modal'),
   infoModal: must<HTMLElement>('#info-modal'),
+  shortcutModal: must<HTMLElement>('#shortcut-modal'),
   settingsGrid: must<HTMLElement>('#settings-grid'),
   errorOverlay: must<HTMLElement>('#error-overlay'),
   errorRefreshBtn: must<HTMLButtonElement>('#error-refresh-btn'),
