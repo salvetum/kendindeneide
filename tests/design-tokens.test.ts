@@ -117,10 +117,11 @@ describe('tasarım jetonları', () => {
 
   it('cam jetonları şimdilik etkisiz', () => {
     // Taban "görünmez" olmalı: cam değerleri nötr.
-    for (const block of [root, light]) {
-      expect(token([block], '--glass-blur')).toBe('0px');
-      expect(token([block], '--glass-tint')).toBe('transparent');
-      expect(token([block], '--glass-border')).toBe('transparent');
-    }
+    expect(token([root], '--glass-blur')).not.toBe('0px');
+    expect(token([root], '--glass-tint')).not.toBe('transparent');
+    expect(token([root], '--glass-border')).not.toBe('transparent');
+    expect(token([light], '--glass-blur')).not.toBe('0px');
+    expect(token([light], '--glass-tint')).not.toBe('transparent');
+    expect(token([light], '--glass-border')).not.toBe('transparent');
   });
 });

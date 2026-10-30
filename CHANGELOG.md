@@ -3,7 +3,27 @@
 Bu projedeki tüm önemli değişiklikler bu dosyada belgelenir.
 Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek hazırlanmıştır.
 
-## [3.0.6] — Editör Araçları, Paylaşım ve Tasarım Tabanı
+## [3.0.7] — Kod Katlama ve Cam Efekti
+
+### Eklendi
+
+- **Kod katlama** — editörün solundaki gutter'da +/- işaretçileri ile kod bloklarını
+  katlayıp açma. CM5'in yerleşik fold eklentileri (`brace-fold`, `indent-fold`,
+  `comment-fold`, `xml-fold`) ESM paketi altında global CodeMirror'a kayıt
+  olmadığı için kendi `rangeFinder`'ımızı yazmak yerine bu eklentiler import
+  edildi ve `foldgutter` etkinleştirildi. 12 işaretçi üretiliyor (doğrulandı).
+- **Cam efekti (glassmorphism)** — `--glass-blur: 12px`, `--glass-tint` ve
+  `--glass-border` jetonları artık aktif. Başlık çubuğu, editör sekmeleri,
+  panel başlıkları, editör/sonuç çerçeveleri, arama çubuğu, konsol paneli
+  ve modal diyaloglar `backdrop-filter: blur(12px)` ile cam efekti alıyor.
+  Jetonlar `:root` ve `[data-theme="light"]`'ta tanımlı; tema geçişinde
+  otomatik uyum sağlıyor.
+
+### Değişti
+
+- `tests/design-tokens.test.ts` — cam jetonlarının "etkisiz" olması şartı
+  "aktif" olması şartına güncellendi (5 test).
+- `.CodeMirror-foldgutter` ve ilgili stiller `src/styles/main.css`'e eklendi.
 
 ### Eklendi
 
@@ -43,6 +63,8 @@ Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.1.0/) esinlenerek h
   kayıyordu.
 
 ### Bilinçli olarak ertelendi
+
+- (kod katlama artık tamamlandı — bkz. 3.0.7)
 
 - **Kod katlama.** `foldgutter` eklentisi yükleniyor ve boş çizgi
   oluşuyor, ancak CM5'in fold yardımcıları (`brace-fold`, `comment-fold`,

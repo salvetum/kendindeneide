@@ -1,5 +1,6 @@
 @import 'codemirror/lib/codemirror.css';
 @import 'codemirror/addon/lint/lint.css';
+@import 'codemirror/addon/fold/foldgutter.css';
 @import 'codemirror/theme/dracula.css';
 @import 'codemirror/theme/eclipse.css';
 
@@ -80,10 +81,10 @@
   --elev-1: 0 6px 16px rgba(0, 0, 0, 0.3);
   --elev-2: 0 10px 28px rgba(0, 0, 0, 0.38);
   --elev-3: 0 18px 48px rgba(0, 0, 0, 0.48);
-  /* Cam efekti eklendiğinde doldurulacak; şimdilik saydam. */
-  --glass-blur: 0px;
-  --glass-tint: transparent;
-  --glass-border: transparent;
+  /* Cam efekt jetonları — artık aktif */
+  --glass-blur: 12px;
+  --glass-tint: rgba(30, 27, 46, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.08);
 
   /* Mevcut roller, yüzey ölçeğine bağlanıyor */
   --bg-color: var(--surface-0);
@@ -122,11 +123,10 @@
   --elev-2: 0 10px 28px rgba(0, 0, 0, 0.11);
   --elev-3: 0 18px 48px rgba(0, 0, 0, 0.14);
 
-  /* Cam jetonları iki temada da açıkça yazılıyor: temaya göre farklı
-     değerler alacaklar, unutulursa sessizce yedek değere düşmesinler. */
-  --glass-blur: 0px;
-  --glass-tint: transparent;
-  --glass-border: transparent;
+  /* Cam jetonları iki temada da açıkça yazılıyor */
+  --glass-blur: 12px;
+  --glass-tint: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(0, 0, 0, 0.06);
 
   --bg-color: var(--surface-0);
   --text-color: #333147;
@@ -224,16 +224,18 @@ textarea {
 /* ------------------------------------------------------------------ */
 
 .header {
-  background-color: var(--header-bg);
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
   padding: 10px 20px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  box-shadow: var(--shadow);
+  box-shadow: var(--elev-1);
   z-index: 20;
   flex-shrink: 0;
   gap: 16px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .header-left {
@@ -367,11 +369,14 @@ textarea {
   flex-direction: column;
   min-width: 150px;
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--elev-2);
   margin: 10px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
   overflow: hidden;
   contain: layout style paint;
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .pane-view {
@@ -393,9 +398,11 @@ textarea {
 .editor-tabs {
   display: flex;
   flex-shrink: 0;
-  background-color: var(--header-bg);
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
   padding: 0 10px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .pane-header,
@@ -444,9 +451,11 @@ textarea {
 }
 
 .pane-header {
-  background-color: var(--header-bg);
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
   font-size: 15px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -484,6 +493,49 @@ textarea {
 
 .cm-s-eclipse .CodeMirror-cursor {
   border-left: 2px solid #333;
+}
+
+/* CodeMirror Fold Gutter */
+.CodeMirror-foldgutter {
+  width: 18px !important;
+  background-color: var(--header-bg) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+  cursor: pointer;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 1px 2px;
+  border-radius: 2px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  text-align: center;
+  line-height: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.CodeMirror-foldgutter-open:hover,
+.CodeMirror-foldgutter-folded:hover {
+  background-color: var(--surface-3);
+  border-color: var(--accent-color);
+}
+
+.CodeMirror-foldgutter-open::after {
+  content: '\2212';
+}
+
+.CodeMirror-foldgutter-folded::after {
+  content: '+';
+}
+
+.CodeMirror-foldmarker {
+  display: none;
 }
 
 .cm-s-dracula span.cm-meta {
@@ -525,8 +577,10 @@ textarea {
   gap: 6px;
   flex-shrink: 0;
   padding: 8px 10px;
-  background-color: var(--surface-1);
-  border-bottom: 1px solid var(--border-color);
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border);
   font-size: 13px;
 }
 
@@ -627,8 +681,10 @@ textarea {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--border-color);
-  background-color: var(--header-bg);
+  border-top: 1px solid var(--glass-border);
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 /* `hidden` özniteliği display:flex tarafından ezilmesin. */
@@ -640,6 +696,10 @@ textarea {
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .diagnostics-toggle {
@@ -842,8 +902,8 @@ textarea {
   width: 100%;
   height: 100%;
   background: var(--modal-overlay-bg);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -862,16 +922,18 @@ textarea {
 }
 
 .modal-content {
-  background: var(--header-bg);
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   padding: 2rem;
-  border: 1px solid var(--border-color);
   width: 90%;
   max-width: 500px;
   text-align: left;
   transform: translateY(30px) scale(0.95);
   opacity: 0;
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--elev-3);
   transition:
     transform var(--transition-speed) cubic-bezier(0.25, 0.46, 0.45, 0.94),
     opacity var(--transition-speed) ease-in-out;

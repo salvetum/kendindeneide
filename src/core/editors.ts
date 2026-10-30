@@ -8,11 +8,12 @@ import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/search/match-highlighter';
 import 'codemirror/addon/search/searchcursor';
-// Kod katlama eklentileri sonraya bırakıldı: `foldgutter` yükleniyor ve
-// çizgi oluşuyor, ancak CM5'in fold yardımcıları ESM paketi altında
-// kayıt olmadığı için işaretçiler hiç üretilmiyor. Ayrıntı: CHANGELOG 3.0.6.
-// dracula / eclipse temaları saf CSS'tir; src/styles/main.css içinden yüklenir.
-// dracula / eclipse temaları saf CSS'tir; src/styles/main.css içinden yüklenir.
+import 'codemirror/addon/fold/foldcode';
+import 'codemirror/addon/fold/foldgutter';
+import 'codemirror/addon/fold/brace-fold';
+import 'codemirror/addon/fold/indent-fold';
+import 'codemirror/addon/fold/comment-fold';
+import 'codemirror/addon/fold/xml-fold';
 
 import { dom } from '../app/dom';
 import { EDITOR_MODES, state } from '../app/state';
@@ -35,18 +36,27 @@ let onChange: ChangeHandler = () => undefined;
  * belgeleniyor. Ayrıntı: CHANGELOG 3.0.6.
  */
 function baseOptions(slot: EditorSlot): EditorConfiguration {
-  return {
+  const opts: Record<string, unknown> = {
     mode: EDITOR_MODES[slot],
     theme: currentCodeMirrorTheme(),
     lineNumbers: true,
     autoCloseTags: true,
     autoCloseBrackets: true,
     highlightSelectionMatches: { showToken: /\w/u, annotateScrollbar: true },
-    gutters: ['CodeMirror-linenumbers', 'CodeMirror-lint-markers'],
-    // Linterlar lazy yüklendiği için başlangıçta kapalı; init sonrası açılır.
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+foldGutter: {
+      rangeFinder: CodeMirror.fold.combine(
+        CodeMirror.fold.brace,
+        CodeMirror.fold.indent,
+        CodeMirror.fold.comment,
+        CodeMirror.fold.xml,
+      ),
+    },
     lint: false,
     ...editorPrefs({ tabSize: state.editorTabSize, wordWrap: state.editorWordWrap }),
   };
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  return opts as EditorConfiguration;
 }
 
 export function setChangeHandler(handler: ChangeHandler): void {
