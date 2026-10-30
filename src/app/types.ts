@@ -1,5 +1,5 @@
 export type Lang = 'tr' | 'en';
-export type Theme = 'dark' | 'light';
+export type Theme = 'dark' | 'light' | 'system';
 export type LibraryKey = 'jQuery' | 'react' | 'vue';
 export type EditorMode = 'htmlmixed' | 'text/html' | 'css' | 'javascript';
 export type ToastKind = 'success' | 'info' | 'warning' | 'error';

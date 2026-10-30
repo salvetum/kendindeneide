@@ -721,6 +721,11 @@ textarea {
   background-color: var(--accent-hover);
 }
 
+.preview-device-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 1px;
+}
+
 .preview-device-wrapper {
   display: flex;
   justify-content: center;
