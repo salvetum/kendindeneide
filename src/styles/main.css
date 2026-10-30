@@ -70,81 +70,89 @@
 /* ------------------------------------------------------------------ */
 
 :root {
-  /* Yüzey ölçeği */
-  --surface-0: #1e1b2e;
-  --surface-1: #28243d;
-  --surface-2: #353052;
-  --surface-3: #4a4566;
-  --surface-4: #353052;
+  /* Yüzey ölçeği — oklch renk uzayı (algısal olarak üniform) */
+  --surface-0: oklch(17% 0.008 250);
+  --surface-1: oklch(21% 0.01 250);
+  --surface-2: oklch(25% 0.012 250);
+  --surface-3: oklch(30% 0.014 250);
+  --surface-4: oklch(34% 0.016 250);
 
-  /* Yükseltme (elevation) ölçeği — cam öncesi iskelet */
-  --elev-1: 0 6px 16px rgba(0, 0, 0, 0.3);
-  --elev-2: 0 10px 28px rgba(0, 0, 0, 0.38);
-  --elev-3: 0 18px 48px rgba(0, 0, 0, 0.48);
-  /* Cam efekt jetonları — artık aktif */
-  --glass-blur: 12px;
-  --glass-tint: rgba(30, 27, 46, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  /* Yükseltme (elevation) ölçeği — renkli gölgeler (accent tonu) */
+  --elev-1: 0 6px 20px oklch(15% 0.03 250 / 0.35);
+  --elev-2: 0 12px 32px oklch(15% 0.04 250 / 0.45);
+  --elev-3: 0 20px 50px oklch(15% 0.05 250 / 0.55);
+
+  /* Cam efekt jetonları — derinleştirilmiş */
+  --glass-blur: 16px;
+  --glass-tint: oklch(17% 0.008 250 / 0.65);
+  --glass-border: oklch(100% 0 0 / 0.06);
 
   /* Mevcut roller, yüzey ölçeğine bağlanıyor */
   --bg-color: var(--surface-0);
-  --text-color: #d1d1e6;
+  --text-color: oklch(88% 0.01 250);
+  --text-muted: oklch(58% 0.01 250);
   --header-bg: var(--surface-1);
   --editor-bg: var(--surface-0);
   --result-bg: var(--surface-0);
   --border-color: var(--surface-3);
-  --accent-color: #8a79f7;
-  --accent-hover: #a094f8;
+  --accent-color: oklch(72% 0.19 260);
+  --accent-hover: oklch(78% 0.17 260);
+  --accent-glow: oklch(72% 0.19 260 / 0.35);
   --button-bg: var(--surface-2);
   --button-hover-bg: var(--surface-3);
-  --modal-overlay-bg: rgba(30, 27, 46, 0.85);
-  --green: #8ff0a4;
-  --orange: #ffc98a;
-  --red: #ff8a8a;
-  --blue: #8ab4f8;
-  --yellow: #fde28c;
+  --modal-overlay-bg: oklch(12% 0.01 250 / 0.85);
+  --green: oklch(78% 0.18 145);
+  --orange: oklch(78% 0.15 60);
+  --red: oklch(72% 0.16 25);
+  --blue: oklch(72% 0.16 225);
+  --yellow: oklch(82% 0.15 90);
   --font-main: 'Segoe UI', 'Roboto', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   --border-radius: 12px;
   --shadow: var(--elev-1);
-  --transition-speed: 0.3s;
+  --transition-speed: 0.25s;
+  --aurora-1: oklch(72% 0.19 260 / 0.12);
+  --aurora-2: oklch(72% 0.18 225 / 0.08);
+  --aurora-3: oklch(78% 0.18 145 / 0.06);
 }
 
 [data-theme='light'] {
-  /* Yüzey ölçeği — koyu temada açık, açık temada koyulaşan (artan
-     yüzey = daha koyu gölge hissi) */
-  --surface-0: #f5f4fa;
-  --surface-1: #ffffff;
-  --surface-2: #ebeaf7;
-  --surface-3: #d9d7e8;
-  --surface-4: #ffffff;
+  --surface-0: oklch(97% 0.005 250);
+  --surface-1: oklch(100% 0 0);
+  --surface-2: oklch(93% 0.008 250);
+  --surface-3: oklch(88% 0.01 250);
+  --surface-4: oklch(97% 0.005 250);
 
-  --elev-1: 0 6px 16px rgba(0, 0, 0, 0.08);
-  --elev-2: 0 10px 28px rgba(0, 0, 0, 0.11);
-  --elev-3: 0 18px 48px rgba(0, 0, 0, 0.14);
+  --elev-1: 0 6px 20px oklch(50% 0.02 250 / 0.08);
+  --elev-2: 0 12px 32px oklch(50% 0.02 250 / 0.12);
+  --elev-3: 0 20px 50px oklch(50% 0.02 250 / 0.18);
 
-  /* Cam jetonları iki temada da açıkça yazılıyor */
-  --glass-blur: 12px;
-  --glass-tint: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-blur: 16px;
+  --glass-tint: oklch(100% 0 0 / 0.65);
+  --glass-border: oklch(0% 0 0 / 0.06);
 
   --bg-color: var(--surface-0);
-  --text-color: #333147;
+  --text-color: oklch(20% 0.01 250);
+  --text-muted: oklch(45% 0.01 250);
   --header-bg: var(--surface-1);
   --editor-bg: var(--surface-1);
   --result-bg: var(--surface-1);
   --border-color: var(--surface-3);
-  --accent-color: #6a5acd;
-  --accent-hover: #5a4bad;
+  --accent-color: oklch(50% 0.19 260);
+  --accent-hover: oklch(45% 0.19 260);
+  --accent-glow: oklch(50% 0.19 260 / 0.25);
   --button-bg: var(--surface-2);
   --button-hover-bg: var(--surface-3);
-  --modal-overlay-bg: rgba(245, 244, 250, 0.8);
-  --green: #2ecc71;
-  --orange: #f39c12;
-  --red: #e74c3c;
-  --blue: #3498db;
-  --yellow: #f1c40f;
+  --modal-overlay-bg: oklch(95% 0.005 250 / 0.8);
+  --green: oklch(55% 0.16 145);
+  --orange: oklch(60% 0.15 60);
+  --red: oklch(55% 0.16 25);
+  --blue: oklch(55% 0.16 225);
+  --yellow: oklch(60% 0.15 90);
   --shadow: var(--elev-1);
+  --aurora-1: oklch(50% 0.19 260 / 0.06);
+  --aurora-2: oklch(55% 0.18 225 / 0.04);
+  --aurora-3: oklch(55% 0.18 145 / 0.03);
 }
 
 @keyframes fadeIn {
@@ -181,6 +189,43 @@ body {
   transition:
     background-color var(--transition-speed) ease,
     color var(--transition-speed) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Aurora / mesh gradient background — subtle animated glow */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, var(--aurora-1), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, var(--aurora-2), transparent 60%),
+    radial-gradient(ellipse 70% 45% at 50% 50%, var(--aurora-3), transparent 70%);
+  animation: aurora-drift 20s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-2%, 1%) scale(1.03);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(2%, -1%) scale(1.01);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
 }
 
 /* Kaydedilmemiş değişiklik varken başlıktaki ● işareti. */
@@ -253,9 +298,14 @@ textarea {
 .logo {
   font-size: 22px;
   font-weight: 700;
-  color: var(--accent-color);
   white-space: nowrap;
   animation: 0.5s ease-out both fadeIn;
+  background: linear-gradient(135deg, var(--accent-color), var(--blue), var(--accent-hover));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: 0 0 30px var(--accent-glow);
 }
 
 .button-group {
@@ -1042,8 +1092,12 @@ textarea {
 .modal-content h3 {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: var(--accent-color);
   text-align: center;
+  background: linear-gradient(135deg, var(--accent-color), var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .modal-content p {

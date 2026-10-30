@@ -59,22 +59,22 @@ const TOKENS = [
  *  Bu, taban katmanının "görünmemesi" şartının doğrudan sınaması. */
 const ORIJINAL = {
   dark: {
-    '--bg-color': '#1e1b2e',
-    '--editor-bg': '#1e1b2e',
-    '--result-bg': '#1e1b2e',
-    '--header-bg': '#28243d',
-    '--button-bg': '#353052',
-    '--button-hover-bg': '#4a4566',
-    '--border-color': '#4a4566',
+    '--bg-color': 'oklch(17% 0.008 250)',
+    '--editor-bg': 'oklch(17% 0.008 250)',
+    '--result-bg': 'oklch(17% 0.008 250)',
+    '--header-bg': 'oklch(21% 0.01 250)',
+    '--button-bg': 'oklch(25% 0.012 250)',
+    '--button-hover-bg': 'oklch(30% 0.014 250)',
+    '--border-color': 'oklch(30% 0.014 250)',
   },
   light: {
-    '--bg-color': '#f5f4fa',
-    '--editor-bg': '#ffffff',
-    '--result-bg': '#ffffff',
-    '--header-bg': '#ffffff',
-    '--button-bg': '#ebeaf7',
-    '--button-hover-bg': '#d9d7e8',
-    '--border-color': '#d9d7e8',
+    '--bg-color': 'oklch(97% 0.005 250)',
+    '--editor-bg': 'oklch(100% 0 0)',
+    '--result-bg': 'oklch(100% 0 0)',
+    '--header-bg': 'oklch(100% 0 0)',
+    '--button-bg': 'oklch(93% 0.008 250)',
+    '--button-hover-bg': 'oklch(88% 0.01 250)',
+    '--border-color': 'oklch(88% 0.01 250)',
   },
 } as const;
 
@@ -100,9 +100,9 @@ describe('tasarım jetonları', () => {
     }
   });
 
-  it('gölge jetonu orijinal değeri veriyor', () => {
-    expect(resolveToken([root], '--shadow')).toBe('0 6px 16px rgba(0, 0, 0, 0.3)');
-    expect(resolveToken([light], '--shadow')).toBe('0 6px 16px rgba(0, 0, 0, 0.08)');
+  it('gölge jetonu yeni değeri veriyor', () => {
+    expect(resolveToken([root], '--shadow')).toBe('0 6px 20px oklch(15% 0.03 250 / 0.35)');
+    expect(resolveToken([light], '--shadow')).toBe('0 6px 20px oklch(50% 0.02 250 / 0.08)');
   });
 
   it('yüzey ölçeği yalnızca ham renkten oluşuyor, zincirleme değil', () => {
