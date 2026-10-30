@@ -7,7 +7,7 @@ let hideTimer: ReturnType<typeof setTimeout> | undefined;
 
 /**
  * Aynı anda tek toast gösterilir. Yeni bir toast geldiğinde görünen mesaj
- * atlanmaz, kuyruğa alınır.
+ * gecikmeli olarak (VISIBLE_MS sonra) değiştirilir.
  */
 export function showToast(message: string, kind: ToastKind = 'info'): void {
   if (dom.toast.classList.contains('show')) {

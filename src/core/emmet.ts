@@ -22,7 +22,10 @@ async function loadEmmet(): Promise<void> {
     // @ts-expect-error - emmet paketi kendi tip dosyasını exports altında export etmiyor
     const mod: unknown = await import('emmet');
     emmetCore = mod as EmmetModule;
-  })();
+  })().catch((error: unknown) => {
+    emmetLoading = null;
+    throw error;
+  });
 
   await emmetLoading;
 }
@@ -63,7 +66,11 @@ export function tryExpandAbbreviation(editor: CodeMirror.Editor): boolean {
   if (!abbrInfo) return false;
 
   try {
-    const expanded = emmetCore.require('emmet').expandAbbreviation(abbrInfo.abbreviation, {
+    if (typeof emmetCore.require !== 'function') return false;
+    const emmetInstance = emmetCore.require('emmet');
+    if (!emmetInstance || typeof emmetInstance.expandAbbreviation !== 'function') return false;
+
+    const expanded = emmetInstance.expandAbbreviation(abbrInfo.abbreviation, {
       pretty: false,
     });
 
@@ -82,7 +89,11 @@ export function tryExpandAbbreviation(editor: CodeMirror.Editor): boolean {
  * Emmet'i yükler ve ardından kısayolu genişletir (buton / kısayol tuşu için).
  */
 export async function expandAbbreviation(editor: CodeMirror.Editor): Promise<boolean> {
-  await loadEmmet();
+  try {
+    await loadEmmet();
+  } catch {
+    return false;
+  }
   return tryExpandAbbreviation(editor);
 }
 

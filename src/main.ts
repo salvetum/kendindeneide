@@ -124,10 +124,13 @@ function bindHeaderActions(): void {
       case 'share-btn':
         void shareCurrentCode();
         break;
-      case 'emmet-btn':
-        void expandAbbreviation(activeEditor() ?? requireEditor('code'));
-        showToast(t(state.lang, 'emmetExpanded'), 'info');
+      case 'emmet-btn': {
+        const editor = activeEditor() ?? requireEditor('code');
+        void expandAbbreviation(editor).then((expanded) => {
+          if (expanded) showToast(t(state.lang, 'emmetExpanded'), 'info');
+        });
         break;
+      }
       case 'settings-btn':
         openModal(dom.settingsModal);
         break;
@@ -162,7 +165,11 @@ function bindShortcuts(): void {
     }
 
     // Klavye kısayolu paneli (? tuşu) — ctrl/meta gerektirmez.
-    if (event.key === '?') {
+    // Input/textarea içindeyken ? yazma engellenmesin.
+    const target = event.target as HTMLElement | null;
+    const isInput =
+      target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
+    if (event.key === '?' && !isInput) {
       event.preventDefault();
       openModal(dom.shortcutModal);
       return;
@@ -192,8 +199,10 @@ function bindShortcuts(): void {
       openFindbar({ focusReplace: true });
     } else if (key === 'e') {
       event.preventDefault();
-      void expandAbbreviation(activeEditor() ?? requireEditor('code'));
-      showToast(t(state.lang, 'emmetExpanded'), 'info');
+      const editor = activeEditor() ?? requireEditor('code');
+      void expandAbbreviation(editor).then((expanded) => {
+        if (expanded) showToast(t(state.lang, 'emmetExpanded'), 'info');
+      });
     }
   });
 
@@ -225,6 +234,7 @@ async function toggleSeparate(): Promise<void> {
   }
 
   dom.separateBtnText.textContent = t(state.lang, state.separated ? 'combine' : 'separate');
+  updateStatusBar();
 }
 
 function applyPreviewDevice(): void {
@@ -248,7 +258,7 @@ function applyPreviewDevice(): void {
   dom.statusDeviceValue.textContent = deviceLabels[device] ?? device;
 }
 
-function updateStatusBar(): void {
+export function updateStatusBar(): void {
   const editor = activeEditor();
   if (!editor) return;
 
@@ -360,7 +370,7 @@ function boot(): void {
   applyPreviewDevice();
   updateStatusBar();
 
-  void applySharedCode();
+  void applySharedCode().then(() => updateStatusBar());
   runCode(true);
 
   // Linterlar (JSHint/CSSLint/HTMLHint ~670 KB) ilk boyamadan sonra, boşta

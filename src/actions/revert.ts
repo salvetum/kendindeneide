@@ -10,6 +10,7 @@ import { createEditor, requireEditor, setActiveSlot } from '../core/editors';
 import { format } from '../core/format';
 import { persistNow } from './persist';
 import { runCode } from './run';
+import { updateStatusBar } from '../main';
 import { showConfirmation } from '../ui/modal';
 import { showToast } from '../ui/toast';
 
@@ -96,6 +97,7 @@ export async function applyRevert(): Promise<void> {
   // tazelenir; aksi hâlde geri alma yalnızca ekranda görünür, sayfa
   // yenilendiğinde eski kod geri gelir.
   persistNow();
+  updateStatusBar();
   showToast(t(state.lang, 'toastRevert'), 'info');
 }
 
