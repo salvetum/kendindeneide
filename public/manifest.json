@@ -1,0 +1,23 @@
+{
+  "name": "KendinDeneIDE",
+  "short_name": "KendinDeneIDE",
+  "description": "Tarayıcıda çalışan ücretsiz online HTML, CSS ve JavaScript kod editörü.",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1e1b2e",
+  "theme_color": "#8a79f7",
+  "lang": "tr",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["developer", "education", "utilities"],
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  }
+}

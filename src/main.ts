@@ -351,3 +351,10 @@ try {
   console.error(error);
   showFatalError();
 }
+
+// Service Worker kaydı (PWA – offline çalışma).
+if ('serviceWorker' in navigator) {
+  void navigator.serviceWorker.register('./sw.js').catch((error: unknown) => {
+    console.error('Service Worker kaydı başarısız:', error);
+  });
+}
